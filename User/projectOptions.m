@@ -9,7 +9,7 @@
 %  the documentation pages.
 %
 %  Cai Wingfield 11-2009, Li Su updated 2-2012, Fawad updated 12-2013,
-% 10-2014
+% 10-2014, Jana updated 10-2014
 
 function userOptions = projectOptions()
 
@@ -56,11 +56,9 @@ userOptions.jobSize = 1; % sometimes the performance will drop if there are larg
 %this variable to true
 userOptions.flush_Queue= false; 
 %Used only when using CBU cluster i.e.when run_in_parallel_in_cluster= true;
-userOptions.wallTime = '7200:00'; 
-userOptions.nWorkers = 12;
-userOptions.nodesReq = 2;
-userOptions.proPNode = 8;
-userOptions.memReq=32;
+userOptions.wallTime = '6:00:00'; 
+userOptions.nWorkers = 15;
+userOptions.memReq = 400;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% SENSOR LEVEL ANALYSIS %%
@@ -181,7 +179,7 @@ userOptions.searchlightPatterns = 'spatial';
 % all time values in ms
 
 % The width of the sliding window (ms)
-userOptions.temporalSearchlightWidth = 2; %20;
+userOptions.temporalSearchlightWidth = 20; %20;
 
 % Correlate over space ('spatial'),  time ('temporal') or
 % spatiotemporal ('spatiotemporal') (or regularized ('regularized') for
@@ -189,7 +187,7 @@ userOptions.temporalSearchlightWidth = 2; %20;
 userOptions.searchlightPatterns = 'spatial';
 
 % The timestep for sliding window (ms)
-userOptions.temporalSearchlightResolution = 1; %10; % (data point equivalent = total_in_ms/total_dataPoints)
+userOptions.temporalSearchlightResolution = 10; %10; % (data point equivalent = total_in_ms/total_dataPoints)
 
 % The overall window of interest (ms)
 userOptions.temporalSearchlightLimits = [-200 800];

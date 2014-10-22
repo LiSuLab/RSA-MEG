@@ -1,5 +1,5 @@
 %FJ 10-2014
-
+% Jana updated 10-2014
 
 function initialise_CBU_Queue(userOptions)
 
@@ -10,10 +10,8 @@ function initialise_CBU_Queue(userOptions)
             disp('Matlabpool initialising ...');
         end
         if userOptions.run_in_parallel_in_cluster
-            P=cbupool;
-            P.NumWorkers=userOptions.nWorkers;
-            P.SubmitArguments = ['-l walltime=',num2str(userOptions.wallTime), ',mem=' ,num2str(userOptions.memReq),'gb'];      
-            P.ResourceTemplate = ['-l nodes=',num2str(userOptions.nodesReq), ':ppn=' ,num2str(userOptions.proPNode)];    
+            P=cbupool(userOptions.nWorkers);
+            P.ResourceTemplate = ['-l walltime=' num2str(userOptions.wallTime), ',mem=' num2str(userOptions.memReq), 'gb', ',nodes=^N^'];    
             matlabpool(P);
         else
             matlabpool open; 
