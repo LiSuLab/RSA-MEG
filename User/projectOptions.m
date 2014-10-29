@@ -56,7 +56,9 @@ userOptions.jobSize = 1; % sometimes the performance will drop if there are larg
 %this variable to true
 userOptions.flush_Queue= false; 
 %Used only when using CBU cluster i.e.when run_in_parallel_in_cluster= true;
-userOptions.wallTime = '6:00:00'; 
+userOptions.wallTime = '6:00:00';
+userOptions.nodesReq = 2;
+userOptions.proPNode = 8;
 userOptions.nWorkers = 15;
 userOptions.memReq = 400;
 
