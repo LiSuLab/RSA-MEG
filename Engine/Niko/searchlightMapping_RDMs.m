@@ -215,7 +215,7 @@ for cMappingVoxI=1:nVox_mappingMask_request
         %                 cMappingVoxI/nVox_mappingMask_request
     end
 
-    [x y z]=ind2sub(volSize_vox,mappingMask_request_INDs(cMappingVoxI));
+    [x, y, z]=ind2sub(volSize_vox,mappingMask_request_INDs(cMappingVoxI));
 
     % compute (sub)indices of (vox)els (c)urrently (ill)uminated by the spherical searchlight
     cIllVoxSUBs=repmat([x,y,z],[size(ctrRelSphereSUBs,1) 1])+ctrRelSphereSUBs;
