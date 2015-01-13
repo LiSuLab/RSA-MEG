@@ -105,7 +105,7 @@ if overwriteFlag
         maskNames = userOptions.maskNames;
     end
     
-    fprintf(['Constructing RDMs for ROIs:']);  
+    fprintf('Constructing RDMs for ROIs:');  
     
 	for mask = 1:nMasks % For each mask...
 

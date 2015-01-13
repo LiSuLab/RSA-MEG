@@ -490,7 +490,7 @@ function [smm_rs, smm_ps, n, searchlightRDMs] = searchlightMapping_fMRI(fullBrai
 			end%if
 		end%if
 
-		[x y z]=ind2sub(volSize_vox,mappingMask_request_INDs(cMappingVoxI));
+		[x, y, z]=ind2sub(volSize_vox,mappingMask_request_INDs(cMappingVoxI));
 
 		% compute (sub)indices of (vox)els (c)urrently (ill)uminated by the spherical searchlight
 		cIllVoxSUBs=repmat([x,y,z],[size(ctrRelSphereSUBs,1) 1])+ctrRelSphereSUBs;

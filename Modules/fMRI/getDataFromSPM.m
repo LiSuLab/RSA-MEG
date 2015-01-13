@@ -87,9 +87,9 @@ end%function
 % spm_spm:beta (0001) - Sn(1) all_events*bf(1)
 function [betaName, sessionNumber, conditionName] = extractSingleBetaInfo(strIn)
 
-	openBrackets = findstr(strIn, '(');
-	closedBrackets = findstr(strIn, ')');
-	star = findstr(strIn, '*');
+	openBrackets = strfind(strIn, '(');
+	closedBrackets = strfind(strIn, ')');
+	star = strfind(strIn, '*');
 
 	inFirstBrackets = strIn(openBrackets(1)+1:closedBrackets(1)-1);
 	betaName = ['beta_' inFirstBrackets];

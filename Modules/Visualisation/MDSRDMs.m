@@ -123,7 +123,7 @@ else
 	if isfield(localOptions, 'titleString')
 		MDSOptions.titleString = localOptions.titleString;
 	else
-		MDSOptions.titleString = ['Second-order comparison MDS'];
+		MDSOptions.titleString = 'Second-order comparison MDS';
 	end%if:localOptions.titleString
 	
 	fprintf(['Drawing MDS arrangement for RDMs...\n        "' MDSOptions.titleString '" [figure ' num2str(figureNumber) ']\n']);

@@ -100,7 +100,7 @@ if overwriteFlag
         
         if strcmp(userOptions.groupStats,'FFX')
             fprintf('Saving data RDMs for combined mask: ');
-            filepath = ['searchlightRDMs_', ];
+            filepath = 'searchlightRDMs_';
             if userOptions.maskingFlag
                 filepath = [filepath 'masked_'];
             end

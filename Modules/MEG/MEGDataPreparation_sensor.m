@@ -101,13 +101,13 @@ if overwriteFlag
 
 				% Then read the brain data (for this session, condition)
 				readPath = replaceWildcards(userOptions.betaPath, '[[betaIdentifier]]', betas(session, condition).identifier, '[[subjectName]]', thisSubject);
-				[ignore allMEGData] = evalc('fiff_read_evoked(readPath)'); % Using evalc supresses output!
+				[~, allMEGData] = evalc('fiff_read_evoked(readPath)'); % Using evalc supresses output!
 				
 				nChannels = numel(allMEGData.info.chs);
 				[EEGChannelsCell{1:nChannels}] = deal(allMEGData.info.chs.kind);
 				EEGChannels = cell2mat(EEGChannelsCell);
 				clear nChannels EEGChannelsCell;
-				EEGChannels = find(EEGChannels == 2);
+				EEGChannelsBin = EEGChannels == 2;
 
 				allMEGDataMatrix = allMEGData.evoked.epochs;
 				
@@ -119,7 +119,7 @@ if overwriteFlag
 
 				magDataMatrix = allMEGDataMatrix(magChannels, :);
 
-				EEGDataMatrix = allMEGDataMatrix(EEGChannels, :);
+				EEGDataMatrix = allMEGDataMatrix(EEGChannelsBin, :);
 
 				subjectSensorData.Grad1(:, :, condition, session) = grad1DataMatrix; % (channel, time, condition, session)
 				subjectSensorData.Grad2(:, :, condition, session) = grad2DataMatrix;

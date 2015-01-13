@@ -233,7 +233,7 @@ function [varargout] = MEGSearchlight_sensor(sensorImages, Models, userOptions)
 
 			% Load metadata struct for this subject
 			readFile = replaceWildcards(userOptions.betaPath, '[[betaIdentifier]]', tempBetas(1,1).identifier, '[[subjectName]]', subject); %1,1 should be fine
-			[ignore subjectMetadataStruct] = evalc('fiff_read_evoked(readFile)');
+			[~, subjectMetadataStruct] = evalc('fiff_read_evoked(readFile)');
 
             modelName = spacesToUnderscores(Models(userOptions.modelNumber).name);
             
