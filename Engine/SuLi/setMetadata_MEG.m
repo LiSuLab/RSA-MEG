@@ -95,7 +95,7 @@ else % source level analysis
     
     % ================= converting from mseconds to datapoints ============== %
     
-    [vertices totalDataPoints] = size(MEGDataStcL.data);
+    [vertices, totalDataPoints] = size(MEGDataStcL.data);
     totalTimeInMs = totalDataPoints * MEGDataStcL.tstep*1000; % calculated from time step and total data points
     timeAdjusted = totalTimeInMs - norm(MEGDataStcL.tmin * 1000); % last point of data from tmin and total time
     

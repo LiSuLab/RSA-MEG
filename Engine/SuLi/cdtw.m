@@ -15,8 +15,8 @@ function [Dist,D,k,w,rw,tw]=cdtw(r,t,pflag)
 %
 % Copyright (c) 2007 by Pau Mic
 
-[row,M]=size(r); if (row > M) M=row; r=r'; end;
-[row,N]=size(t); if (row > N) N=row; t=t'; end;
+[row,M]=size(r); if (row > M) M = row; r = r'; end;
+[row,N]=size(t); if (row > N) N = row; t = t'; end;
 
 % Distances matrix
 d=zeros(2*M-1,2*N-1);
@@ -25,12 +25,16 @@ for i=1:2:2*M-1
     for j=1:2:2*N-1
         n=floor(j/2)+1;
         d(i,j)=(r(m)-t(n))^2;
-        if (m<M & n<N)
-            if ((t(n)<=r(m) & r(m)<=t(n+1)) | (t(n+1)<=r(m) & r(m)<=t(n))) d(i,j+1)=0;
-            else d(i,j+1)=min([r(m)-t(n) r(m)-t(n+1)].^2);
+        if (m<M && n<N)
+            if ((t(n)<=r(m) && r(m)<=t(n+1)) || (t(n+1)<=r(m) && r(m)<=t(n)))
+                d(i,j+1)=0;
+            else
+                d(i,j+1)=min([r(m)-t(n) r(m)-t(n+1)].^2);
             end
-            if ((r(m)<=t(n) & t(n)<=r(m+1)) | (r(m+1)<=t(n) & t(n)<=r(m))) d(i+1,j)=0;
-            else d(i+1,j)=min([t(n)-r(m) t(n)-r(m+1)].^2);
+            if ((r(m)<=t(n) && t(n)<=r(m+1)) || (r(m+1)<=t(n) & t(n)<=r(m)))
+                d(i+1,j)=0;
+            else
+                d(i+1,j)=min([t(n)-r(m) t(n)-r(m+1)].^2);
             end
         end
     end
@@ -59,37 +63,43 @@ end
 i=2*M-1;
 j=2*N-1;
 w=[M N];
-rw=r(end);
-tw=t(end);
+rw = r(end);
+tw = t(end);
 while ((i+j)~=2)
     m=floor(i/2)+1;
     n=floor(j/2)+1;
     if (i-2)<0 
-        w=[m n-1; w];
-        rw=[r(m) rw];
-        tw=[t(n-1) tw];
-        j=j-2;
+        w = [m n-1; w];
+        rw  =[r(m) rw];
+        tw = [t(n-1) tw];
+        j = j-2;
     elseif (j-2)<0 
-        w=[m-1 n; w];
-        rw=[r(m-1) rw];
-        tw=[t(n) tw];
+        w = [m-1 n; w];
+        rw = [r(m-1) rw];
+        tw  =[t(n) tw];
         i=i-2;
     else
-        [values,number]=min([D(i,j-1) D(i-1,j) D(i-2,j-2)]);
+        [values, number] = min([D(i,j-1) D(i-1,j) D(i-2,j-2)]);
         switch (number)
             case 1,
-                if ((t(n-1)<=r(m) & r(m)<=t(n)) | (t(n)<=r(m) & r(m)<=t(n-1))) x=(r(m)-t(n-1))/(t(n)-t(n-1));
-                elseif ((r(m)-t(n-1))^2 <= (r(m)-t(n))^2) x=0;
-                else x=1;
+                if ((t(n-1)<=r(m) && r(m)<=t(n)) || (t(n)<=r(m) && r(m)<=t(n-1)))
+                    x=(r(m)-t(n-1))/(t(n)-t(n-1));
+                elseif ((r(m)-t(n-1))^2 <= (r(m)-t(n))^2)
+                    x=0;
+                else
+                    x=1;
                 end
                 w=[m n-1+x; w];
                 rw=[r(m) rw];
                 tw=[x*(t(n)-t(n-1))+t(n-1) tw];
                 j=j-2;
             case 2,
-                if ((r(m-1)<=t(n) & t(n)<=r(m)) | (r(m)<=t(n) & t(n)<=r(m-1))) x=(t(n)-r(m-1))/(r(m)-r(m-1));
-                elseif ((t(n)-r(m-1))^2 <= (t(n)-r(m))^2) x=0;
-                else x=1;
+                if ((r(m-1)<=t(n) && t(n)<=r(m)) || (r(m)<=t(n) && t(n)<=r(m-1))) 
+                    x=(t(n)-r(m-1))/(r(m)-r(m-1));
+                elseif ((t(n)-r(m-1))^2 <= (t(n)-r(m))^2) 
+                    x=0;
+                else
+                    x=1;
                 end
                 w=[m-1+x n; w];
                 rw=[x*(r(m)-r(m-1))+r(m-1) rw];

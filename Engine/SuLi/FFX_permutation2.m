@@ -50,7 +50,7 @@ if overwriteFlag
         
         % computes nanmean
         for subjectNumber = 1:nSubjects
-            filepath = ['searchlightRDMs_'];
+            filepath = 'searchlightRDMs_';
             if userOptions.maskingFlag
                 filepath = [filepath 'masked_'];
             end

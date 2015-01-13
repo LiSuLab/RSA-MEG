@@ -1,4 +1,4 @@
-% [realD bootstrapStdE] = bootstrapRDMComparison(bootstrapableReferenceRDMs,
+% [realD, bootstrapStdE] = bootstrapRDMComparison(bootstrapableReferenceRDMs,
 %                                                testRDM,
 %                                                userOptions)
 %
@@ -31,7 +31,7 @@
 %
 % Cai Wingfield 6-2010
 
-function [realD bootstrapStdE] = bootstrapRDMComparison(bootstrapableReferenceRDMs, testRDM, userOptions)
+function [realD, bootstrapStdE] = bootstrapRDMComparison(bootstrapableReferenceRDMs, testRDM, userOptions)
 
 	% Sort out defaults
 	userOptions = setIfUnset(userOptions, 'nResamplings', 1000);

@@ -41,7 +41,7 @@
 %
 % Cai Wingfield 6-2010, 7-2010
 
-function [realDs bootstrapEs pairwisePs] = bootstrapRDMComparisons(bootstrapableReferenceRDMs, testRDMs, userOptions)
+function [realDs, bootstrapEs, pairwisePs] = bootstrapRDMComparisons(bootstrapableReferenceRDMs, testRDMs, userOptions)
 
 	% Sort out defaults
 	userOptions = setIfUnset(userOptions, 'nResamplings', 1000);

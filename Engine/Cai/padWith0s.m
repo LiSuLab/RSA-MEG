@@ -16,7 +16,7 @@
 
 function stringOut = padWith0s(stringIn, maxLengthBefore, maxLengthAfter, radix)
 
-if ~exist('radix', 'var'), radix = '.';, end%if
+if ~exist('radix', 'var'), radix = '.'; end%if
 
 radixIndex = strfind(stringIn, radix);
 

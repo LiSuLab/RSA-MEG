@@ -5,7 +5,7 @@
 %
 % Based on andy Thwaites' code and method; CW 5-2010
 
-function Rhos = vSpeaman(a, b)
+function rhos = vSpeaman(a, b)
 	
  	[aCols aRows] = size(a);
 	[bCols bRows] = size(b);

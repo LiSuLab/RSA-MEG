@@ -77,7 +77,8 @@ if exsitFlag % If there are files which will eventually be saved but which alrea
 		% Now converting the words back into letters
 		if strcmpi(reply, 'Abort'), reply = 'A'; ...
 		elseif strcmpi(reply, 'Skip'), reply = 'S'; ...
-		elseif strcmpi(reply, 'Rerun'), reply = 'R'; end
+		elseif strcmpi(reply, 'Rerun'), reply = 'R';
+		end
 
 	else
 
@@ -125,7 +126,7 @@ if exsitFlag % If there are files which will eventually be saved but which alrea
 		'\nYou didn''t enter anything! Default option selected: [' promptOptions.defaultResponse ']\n']);
 		reply = promptOptions.defaultResponse;
 		
-	elseif ~strcmpi(reply, 'A') & ~strcmpi(reply, 'S') & ~strcmpi(reply, 'R')
+	elseif ~strcmpi(reply, 'A') && ~strcmpi(reply, 'S') && ~strcmpi(reply, 'R')
 		% If they enter something which doesn't make sense, go with the default
 		fprintf([ ...
 		'\n"' reply '" is for... Nothing! You didn''t input a valid\n' ...

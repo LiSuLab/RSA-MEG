@@ -91,7 +91,7 @@ if cluster_stats == 1
     
     number_of_cluster_lh = max(max(lh_cluster.data));
     for j = 1:number_of_cluster_lh
-        [cluster_row cluster_col] = find(lh_cluster.data == j);
+        [cluster_row, cluster_col] = find(lh_cluster.data == j);
         if not(isempty(cluster_col))
             cluster_duration(j) = max(cluster_col) - min(cluster_col) + 1;
             for t = min(cluster_col):max(cluster_col)
@@ -112,7 +112,7 @@ if cluster_stats == 1
     
     number_of_cluster_rh = max(max(rh_cluster.data));
     for j = 1:number_of_cluster_rh
-        [cluster_row cluster_col] = find(rh_cluster.data == j);
+        [cluster_row, cluster_col] = find(rh_cluster.data == j);
         if not(isempty(cluster_col))
             cluster_duration(j) = max(cluster_col) - min(cluster_col) + 1;
             for t = min(cluster_col):max(cluster_col)

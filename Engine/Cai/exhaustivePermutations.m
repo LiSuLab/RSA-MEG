@@ -42,7 +42,6 @@ end%switch:nargin
 absoluteMaximum = 21; % Larger than this and n! is not accurately represented by a double. Does this matter?
 
 initialLexOrder = 1:n;
-nPermutations = prod(1:n);
 
 %if n > absoluteMaximum, permutations = []; return; end%if
 if n > absoluteMaximum, warning('exhaustivePermutations:tooMany', ['21! is the largest number accurately represented by a double.\nAttempting ' num2str(n) '!, therefore, may give\nunpredictable results.']); end%if

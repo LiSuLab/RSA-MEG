@@ -27,7 +27,7 @@ simulationOptions = simulationOptions_demo();
 
 % Generate the SPM files for each subject containing conditions clustered
 % according to preferences in the simulationOptions.
-[betaCorrespondence_true betaCorrespondence_noisy] = simulateSPMFiles(userOptions_common, simulationOptions);
+[betaCorrespondence_true, betaCorrespondence_noisy] = simulateSPMFiles(userOptions_common, simulationOptions);
 
 % Load in the 'true' fMRI data
 fullBrainVols_true = fMRIDataPreparation(betaCorrespondence_true, userOptions_true);

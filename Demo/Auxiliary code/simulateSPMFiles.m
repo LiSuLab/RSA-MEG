@@ -9,7 +9,7 @@
 %
 % Cai Wingfield 6-2010
 
-function [betaCorrespondence_true betaCorrespondence_noisy] = simulateSPMFiles(userOptions, simulationOptions)
+function [betaCorrespondence_true, betaCorrespondence_noisy] = simulateSPMFiles(userOptions, simulationOptions)
 
 returnHere = pwd; % We'll return to the pwd when the function has finished
 
