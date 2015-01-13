@@ -7,18 +7,18 @@
 
 function rhos = vSpeaman(a, b)
 	
- 	[aCols aRows] = size(a);
-	[bCols bRows] = size(b);
+ 	[aCols, aRows] = size(a);
+	[bCols, bRows] = size(b);
 	
 	if aRows ~= bRows, error('vSpeaman:nonMatchingRows', 'a and b must have the same number of rows each.'); end%if
 
 	% Rank a and b
 	
-	[aSorted aIndices] =  sort(a);	clear aSorted;
-	[junk aRanks] = sort(aIndices);	clear junk;
+	[~, aIndices] =  sort(a);
+	[~, aRanks] = sort(aIndices);
 	
-	[bSorted bIndices] =  sort(b);	clear bSorted;
-	[junk bRanks] = sort(bIndices);	clear junk;
+	[~, bIndices] =  sort(b);
+	[~, bRanks] = sort(bIndices);
 	
 	% Now for the pairwise thing
 	

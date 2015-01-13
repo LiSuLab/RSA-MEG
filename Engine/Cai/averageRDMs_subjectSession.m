@@ -105,7 +105,7 @@ for mask =1:nMasks
         aveRDMs(mask,1,session).RDM = squareform(nanmean(temp,1));
         aveRDMs(mask, 1, session).color = RDMs(mask, 1, session).color;
         oldName = RDMs(mask, 1, session).name;
-        bothBits = findstr(oldName, ' | ');
+        bothBits = strfind(oldName, ' | ');
         if numel(bothBits) == 2
             firstBit = bothBits(1);
             secondBit = bothBits(2);
@@ -123,35 +123,6 @@ end%for:mask
 end%function
 
 function aveRDMs = aSes(RDMs)
-% 	nMa = size(RDMs, 1);
-% 	nSu = size(RDMs, 2);
-% 	nSe = size(RDMs, 3);
-% 	for ma = 1:nMa
-% 		for su = 1:nSu
-% 			for se = 1:nSe
-% 				if se == 1
-% 					seSum = RDMs(ma, su, se).RDM;
-% 				else
-% 					seSum = seSum + RDMs(ma, su, se).RDM;
-% 				end%if:se==1
-% 			end%for:se
-% 			aveRDMs(ma, su, 1).RDM = seSum ./ nSe;
-% 			aveRDMs(ma, su, 1).color = RDMs(ma, 1, se).color;
-% 			oldName = RDMs(ma, su, 1).name;
-% 			bothBits = findstr(oldName, ' | ');
-% 			if numel(bothBits) == 2
-% 				firstBit = bothBits(1);
-% 				secondBit = bothBits(2);
-% 				newName = oldName(1:secondBit-1);
-% 			elseif numel(bothBits) == 1
-% 				firstBit = bothBits(1);
-% 				newName = oldName(1:firstBit-1);
-% 			else
-% 				newName = oldName;% in case naming conventions weren't observed
-% 			end%if
-% 			aveRDMs(ma,su, 1).name = newName;
-% 		end%for:su
-% 	end%for:ma
     
 nMasks = size(RDMs, 1);
 nSubjects = size(RDMs, 2);
@@ -166,7 +137,7 @@ for mask =1:nMasks
         aveRDMs(mask,subject,1).RDM = squareform(nanmean(temp,1));
         aveRDMs(mask,subject,1).color = RDMs(mask,subject,1).color;
         oldName = RDMs(mask,subject,1).name;
-        bothBits = findstr(oldName, ' | ');
+        bothBits = strfind(oldName, ' | ');
         if numel(bothBits) == 2
             firstBit = bothBits(1);
             secondBit = bothBits(2);
