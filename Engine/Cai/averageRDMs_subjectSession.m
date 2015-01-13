@@ -54,7 +54,7 @@ end%function
 
 %% Subfunctions %%
 
-function wrongStingsError
+function wrongStringsError
 	error('Please put ''subject'' or ''session'' in for the string arguments.');
 end%function
 
