@@ -11,7 +11,7 @@ function r_matrix = g_matrix(data, nConditions, nRepsPerCondition)
 
 % calculating z matrix
 modelBase = eye(nConditions);
-z_matrix = zeros(nConditions*nRepsPerCondition, nConditions);
+z_matrix = zeros(nConditions * nRepsPerCondition, nConditions);
 itr=1;
 for i=1:nConditions
     for j = 1:nRepsPerCondition
@@ -32,7 +32,7 @@ for i=1:D.K
 end
                     
 % calculating G matrix
-[G,h,u,l,n,jumpI,a]=mvpattern_covcomp(data,z_matrix,'Ac',Ac,'num_iter',2000);
+[G,h,u,l,n,jumpI,a] = mvpattern_covcomp(data,z_matrix,'Ac',Ac,'num_iter',2000);
                   
 % computing RDM from G matrix
 for i=1:nConditions
@@ -40,7 +40,7 @@ for i=1:nConditions
         if i==j
             r_matrix(i,j) = 1;
         else
-            r_matrix(i,j) = G(i,j)/(sqrt(G(i,i))*sqrt(G(j,j)));
+            r_matrix(i,j) = G(i,j) / (sqrt(G(i,i)) * sqrt(G(j,j)));
         end
     end
 end

@@ -88,13 +88,16 @@ function [varargout] = MEGDataPreparation_source(subject, betaCorrespondence, us
 
 	%% Get Data
 	betas = userOptions.betaCorrespondence;
-	[nSessions,nConditions] = size(betas);
+	[nSessions, nConditions] = size(betas);
     downsampleRate = userOptions.temporalDownsampleRate;
     
+    % First get just the first condition of the first subject's left data,
+    % to set the correct sizes, even if a future reading fails due to
+    % artifacts
     readPathL = replaceWildcards(userOptions.betaPath, '[[betaIdentifier]]', betas(1, 1).identifier, '[[subjectName]]', userOptions.subjectNames{1}, '[[LR]]', 'l');
     MEGDataStcL = mne_read_stc_file1(readPathL);
     MEGDataStcL.data = MEGDataStcL.data(:,1:downsampleRate:end);
-    [nVertex_Raw,nTimepoint_Raw] = size(MEGDataStcL.data);
+    [nVertex_Raw, nTimepoint_Raw] = size(MEGDataStcL.data);
     
 	%for subject = 1:nSubjects % For each subject
 
@@ -122,21 +125,21 @@ function [varargout] = MEGDataPreparation_source(subject, betaCorrespondence, us
                     MEGDataVolR = single(MEGDataStcR.data);
                     MEGDataVolL = MEGDataVolL(:,1:downsampleRate:end);
                     MEGDataVolR = MEGDataVolR(:,1:downsampleRate:end);
-                catch
+                catch ex
                     % when a trial is rejected due to artifact, this item
                     % is replaced by NaNs. Li Su 3-2012
                     disp(['Warning: Failed to read data for condition ' num2str(condition) '... Writing NaNs instead.']);
                     dlmwrite(missingFilesLog, str2mat(replaceWildcards( betas(session, condition).identifier, '[[subjectName]]', thisSubject)), 'delimiter', '', '-append');
                     MEGDataVolL = NaN(nVertex_Raw,nTimepoint_Raw);
                     MEGDataVolR = MEGDataVolL;
-                end
+				end
 				
 				baselineLimit = double(-MEGDataStcL.tmin/MEGDataStcL.tstep); % I hope these are all the same!
                 
                 subjectSourceData.L(:, :, condition, session) = MEGDataVolL; % (vertices, time, condition, session)
 				subjectSourceData.R(:, :, condition, session) = MEGDataVolR;
                 
-                if nConditions>10
+                if nConditions > 10
                     if mod(condition, floor(nConditions/20)) == 0, fprintf('\b.:'); end%if
                 else
                     fprintf('\b.:');

@@ -1,3 +1,8 @@
+% userOptions = setMetadata_MEG(Models, userOptions)
+%
+% Models - an array of structs
+% userOptions - struct of user preferences, modified and returned.
+%
 % This function sets any missing parameters in userOptions to the default
 % values. If no default values can be set, ask the user to set it and show
 % an error message. It also reads in the MEG data to find out some meta
@@ -6,7 +11,6 @@
 % Li Su 3-2012
 % Update: Isma Zulfiqar 9-2012 fixed time issues for searchlight all brain
 % Update: IZ 11-2012 time support for ROI maks
-
 
 function userOptions = setMetadata_MEG(Models, userOptions)
 
@@ -20,8 +24,13 @@ tempBetas = betaCorrespondence;
 userOptions.betaCorrespondence = tempBetas;
 
 if userOptions.sensorLevelAnalysis
+    
+    % Despite warning, readPath *is* used, but it's used in an eval
     readPath = replaceWildcards(userOptions.betaPath, '[[betaIdentifier]]', tempBetas(1,1).identifier, '[[subjectName]]', userOptions.subjectNames{1});
-	[ignore allMEGData] = evalc('fiff_read_evoked(readPath)'); % Using evalc supresses output!
+    
+    %
+    % Using evalc supresses output!
+    [~, allMEGData] = evalc('fiff_read_evoked(readPath)');
     
     samplingRate = allMEGData.info.sfreq/1000; % ms
     
@@ -55,9 +64,12 @@ if userOptions.sensorLevelAnalysis
         
         userOptions.maskSpec.toDataPoints = [1+((userOptions.maskSpec.timeWindow(1) - tmin)/samplingRate) 1+((userOptions.maskSpec.timeWindow(2)-tmin)/samplingRate)];
         
-    end    
-				
+    end
+    
 else % source level analysis
+    
+    % We can read just the left hemisphere, as we just want the metadata,
+    % and we assume both hemispheres will be the same
     readPathL = replaceWildcards(userOptions.betaPath, '[[betaIdentifier]]', tempBetas(1, 1).identifier, '[[subjectName]]', userOptions.subjectNames{1}, '[[LR]]', 'l');
     MEGDataStcL = mne_read_stc_file1(readPathL);
     MEGDataVolL = single(MEGDataStcL.data);
@@ -70,7 +82,7 @@ else % source level analysis
     
     userOptions.nSessions = size(tempBetas, 1);
     modelNumber = userOptions.modelNumber;
-    userOptions.nConditions = size(squareRDM(Models(modelNumber).RDM),1);
+    userOptions.nConditions = size(squareRDM(Models(modelNumber).RDM), 1);
     
     % ============= setting time parameters for output file ================= %
     userOptions.STCmetaData.tmin = MEGDataStcL.tmin; % - ...
@@ -85,23 +97,23 @@ else % source level analysis
     
     [vertices totalDataPoints] = size(MEGDataStcL.data);
     totalTimeInMs = totalDataPoints * MEGDataStcL.tstep*1000; % calculated from time step and total data points
-    timeAdjusted = totalTimeInMs - norm(MEGDataStcL.tmin*1000); % last point of data from tmin and total time
+    timeAdjusted = totalTimeInMs - norm(MEGDataStcL.tmin * 1000); % last point of data from tmin and total time
     
     %============================= input checks ============================= %
     % ====== comparing search light resolution to the time step of data ===== %
     
     % time step
     if userOptions.searchlight % added 03/12 IZ
-        if MEGDataStcL.tstep*1000 * userOptions.temporalDownsampleRate > userOptions.temporalSearchlightResolution
+        if MEGDataStcL.tstep * 1000 * userOptions.temporalDownsampleRate > userOptions.temporalSearchlightResolution
             error('Error: The input time resolution of search light cannot be applied. The time resolution for data is lower.');
         else
-            userOptions.STCmetaData.tstep = userOptions.temporalSearchlightResolution *...
+            userOptions.STCmetaData.tstep = userOptions.temporalSearchlightResolution * ...
                 userOptions.temporalDownsampleRate / 1000;  % in s
         end
     end
     
     % searchlight width in relation to downsample rate
-    if userOptions.temporalSearchlightWidth < userOptions.STCmetaData.tstep*1000
+    if userOptions.temporalSearchlightWidth < userOptions.STCmetaData.tstep * 1000
         disp('Warning: The searchlight width is less than data rate after downsampling');
         disp(['Setting temporal searchlight width equal to minimum timestep: ', num2str(userOptions.STCmetaData.tstep*1000), 'ms']);
         userOptions.temporalSearchlightWidth = userOptions.STCmetaData.tstep*1000;

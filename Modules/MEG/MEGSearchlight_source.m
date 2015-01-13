@@ -9,7 +9,6 @@
 function [varargout] = MEGSearchlight_source(subjectNumber, Models, userOptions)
 
 returnHere = pwd; % We'll come back here later
-% gotoDir(userOptions.rootPath, 'Scripts');
 tempBetas = userOptions.betaCorrespondence;
 subject = userOptions.subjectNames{subjectNumber};
 nSubjects = userOptions.nSubjects;
@@ -26,13 +25,13 @@ if userOptions.maskingFlag
 else
     MapsFilename = [userOptions.analysisName, '_rMesh_', modelName, '_', subject];
 end
+
 promptOptions.functionCaller = 'MEGSearchlight_source';
 promptOptions.defaultResponse = 'S';
 promptOptions.checkFiles(1).address = fullfile(userOptions.rootPath, 'Maps', modelName, [MapsFilename, '-lh.stc']);
 promptOptions.checkFiles(2).address = fullfile(userOptions.rootPath, 'Maps', modelName, [MapsFilename, '-rh.stc']);
 
 overwriteFlag = overwritePrompt(userOptions, promptOptions);
-overwriteFlag = true;
 
 if overwriteFlag
     
@@ -41,6 +40,7 @@ if overwriteFlag
     gotoDir(fullfile(userOptions.rootPath, 'Maps'), modelName);
     
     tic;%1
+    
     fprintf(['\tSearching in the source meshes of subject ' num2str(subjectNumber) ' of ' num2str(nSubjects) ':']);
     
     % Run searchlight on both halves of the brain
@@ -54,22 +54,28 @@ if overwriteFlag
                 chi = 'R';
         end%switch:chirality
         
+        % Get masks
+        
         % update IZ 03/12
         % assuming every analysis works as a mask, overlaying masks to create a single mask
         nMasks = numel(fieldnames(userOptions.indexMasks));
         indexMasks = userOptions.indexMasks;
-        masks = fieldnames(userOptions.indexMasks);
+        maskNames = fieldnames(userOptions.indexMasks);
         maskIndices=[];
         for mask = 1:nMasks
-            thisMask = masks{mask};
-            if strfind(thisMask,[lower(chi),'h'])
-                maskIndices = union(maskIndices,indexMasks.(thisMask).maskIndices);
-                maskIndices = sort(maskIndices(maskIndices <= userOptions.nVertices)); userOptions.maskIndices.(chi) = maskIndices;userOptions.chi = chi;
+            thisMaskName = maskNames{mask};
+            if strfind(thisMaskName, [lower(chi), 'h'])
+                maskIndices = union(maskIndices, indexMasks.(thisMaskName).maskIndices);
+                maskIndices = sort(maskIndices(maskIndices <= userOptions.nVertices));
+                userOptions.maskIndices.(chi) = maskIndices;
+                userOptions.chi = chi;
             end
         end
         timeIndices = userOptions.dataPointsSearchlightLimits;
         
-        if userOptions.nSessions==1
+        % Apply masks
+        
+        if userOptions.nSessions == 1
             maskedMesh = sourceMeshes.(chi)(:, timeIndices(1):timeIndices(2), :); % (vertices, timePointes, conditions)
         else
             maskedMesh = sourceMeshes.(chi)(:, timeIndices(1):timeIndices(2), :, :); % (vertices, timePointes, conditions, sessions)
@@ -108,10 +114,10 @@ if overwriteFlag
         
     end%for:chirality
     
+    % Print the elapsed time for this subject
     if chirality == 1
         fprintf('\n\t\t\t\t\t\t\t\t');
     else
-        % Print the elapsed time for this subject
         t = toc;%1
         fprintf([': [' num2str(ceil(t)) 's]\n']);
     end%if

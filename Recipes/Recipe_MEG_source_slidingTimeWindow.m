@@ -69,6 +69,10 @@ if userOptions.recieveEmail
     setupEmail(userOptions.mailto);
 end
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Stopping parallel toolbox %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if userOptions.run_in_parallel;
    matlabpool close;
 end
