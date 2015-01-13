@@ -142,7 +142,8 @@ end
 %% plot MDS arrangement using text labels
 if isfield(localOptions,'figI_textLabels')&&~isempty(localOptions.figI_textLabels)
     
-    figIs=[figIs,localOptions.figI_textLabels(1)]; [hf,ha]=selectPlot(localOptions.figI_textLabels);
+    figIs = [figIs,localOptions.figI_textLabels(1)];
+    [hf, ha] = selectPlot(localOptions.figI_textLabels);
 
     % plot rubberband plot in the background
     if ~isfield(localOptions,'rubberbandGraphPlot')
@@ -166,6 +167,7 @@ if isfield(localOptions,'figI_textLabels')&&~isempty(localOptions.figI_textLabel
 		else
 			veryLocalOptions.dotSize = 8;
 		end%if
+        
         plotDotsWithTextLabels(pats_mds_2D,veryLocalOptions);
 		
 		% Plot convex hulls
@@ -208,32 +210,34 @@ if isfield(localOptions,'figI_textLabels')&&~isempty(localOptions.figI_textLabel
             localOptions.categoryIs=1:size(localOptions.contrasts,2);
         end
 
-	if isfield(localOptions, 'fontSize')
-		fontSize = localOptions.fontSize;
-	else
-		fontSize = 11;
-	end%if:fontSize
+        if isfield(localOptions, 'fontSize')
+            fontSize = localOptions.fontSize;
+        else
+            fontSize = 11;
+        end%if:fontSize
 
         plotTextLabels(pats_mds_2D,localOptions.textLabels,fontSize,localOptions.contrasts(:,localOptions.categoryIs),localOptions.categoryColors(localOptions.categoryIs,:),localOptions.categoryLabels(localOptions.categoryIs));
         axis equal off;
-        if isstruct(RDM), title(['\bf',deunderscore(RDM.name)]); end
-end
+        if isstruct(RDM)
+            title(['\bf',deunderscore(RDM.name)]);
+        end
+    end
 
-axis([min(pats_mds_2D(:,1)) max(pats_mds_2D(:,1)) min(pats_mds_2D(:,2)) max(pats_mds_2D(:,2))]);
+    axis([min(pats_mds_2D(:,1)) max(pats_mds_2D(:,1)) min(pats_mds_2D(:,2)) max(pats_mds_2D(:,2))]);
 
-if isfield(localOptions, 'titleString')
-	title(['\fontsize{12}' localOptions.titleString]);
-end%if
+    if isfield(localOptions, 'titleString')
+        title(['\fontsize{12}' localOptions.titleString]);
+    end%if
 
-% Handle the figure
-if isfield(userOptions, 'colourmap')
-		set(gcf,'Colormap', userOptions.colourmap);
-	end%if
+    % Handle the figure
+    if isfield(userOptions, 'colourmap')
+        set(gcf,'Colormap', userOptions.colourmap);
+    end%if
 
-	% Then export and/or close figures appropriately
-	fileName = [userOptions.analysisName '_' localOptions.fileName];
-	handleCurrentFigure(fullfile(userOptions.rootPath, 'Figures',fileName), userOptions);
-	clear thisFileName
+    % Then export and/or close figures appropriately
+    fileName = [userOptions.analysisName '_' localOptions.fileName];
+    handleCurrentFigure(fullfile(userOptions.rootPath, 'Figures',fileName), userOptions);
+    clear thisFileName
 end
 
 

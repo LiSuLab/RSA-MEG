@@ -45,11 +45,11 @@ if ~isfield(localOptions, 'linkageType')
 	localOptions.linkageType = 'single';
 end
 
-[hf ha figI] = selectPlot(localOptions.figureNumber);
+[hf, ha, figI] = selectPlot(localOptions.figureNumber);
 if isfield(localOptions, 'colorThreshold')
-	[H_ignore T_ignore labelReordering] = dendrogram(linkage(vectorizeRDM(RDM), localOptions.linkageType), 0, 'labels', localOptions.labels, 'colorThreshold', localOptions.colorThreshold, 'orientation', 'left');
+	[~, ~, labelReordering] = dendrogram(linkage(vectorizeRDM(RDM), localOptions.linkageType), 0, 'labels', localOptions.labels, 'colorThreshold', localOptions.colorThreshold, 'orientation', 'left');
 else
-	[H_ignore T_ignore labelReordering] = dendrogram(linkage(vectorizeRDM(RDM), localOptions.linkageType), 0, 'labels', localOptions.labels, 'orientation', 'left');
+	[~, ~, labelReordering] = dendrogram(linkage(vectorizeRDM(RDM), localOptions.linkageType), 0, 'labels', localOptions.labels, 'orientation', 'left');
 end%if
 
 if isfield(userOptions, 'conditionColours');

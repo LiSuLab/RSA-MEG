@@ -14,10 +14,10 @@ if ~exist('aspect', 'var') || isempty(aspect), aspect = 2/3; end
 %% Handle RDM types
 
 if isstruct(RDMs)
-	[rawRDMs nRDMs] = unwrapRDMs(RDMs);
+    [rawRDMs, nRDMs] = unwrapRDMs(RDMs);
 else
-	rawRDMs = RDMs;
-	nRDMs = size(rawRDMs, 3);
+    rawRDMs = RDMs;
+    nRDMs = size(rawRDMs, 3);
 end%if:isstruct(RDMs)
 
 % rawRDMs is now [nC nC nR] or [1 t(nC) nR]
@@ -28,65 +28,65 @@ allMin = inf;
 allMax = -inf;
 
 for RDMi = 1:nRDMs
-
-	thisRDM = rawRDMs(:, :, RDMi);
-
-	if max(size(thisRDM)) == numel(thisRDM)
-		% Then it's in ltv form
-		% So we've got a symmetric RDM
-		% Square it
-		thisRDM = squareform(thisRDM); % squareform leaves 0s on the diagonal, which is what we want
-		RDMtype{RDMi} = '';
-	else
-		% Then it's a square RDM
-		if isequalwithequalnans(thisRDM, thisRDM')
-			% It's symmetric
-			if ~any(diag(thisRDM)) && ~any(isnan(diag(thisRDM))) % 0s on the diagonal
-				% It's a regular RDM
-				RDMtype{RDMi} = '';
-			elseif isnan(thisRDM(1,1)) % (1,1) is a nan
-				% It's a very lucky cv2RDM
-				RDMtype{RDMi} = '[cv2RDM] ';
-			else
-				% symmetric, not all 0s or all nans on diagonal
-				warning(['RDM ' num2str(RDMi) ' is symmetric, but has neither all 0s or all NaNs on the diagonal.  Not sure how to deal with this.']);
+    
+    thisRDM = rawRDMs(:, :, RDMi);
+    
+    if max(size(thisRDM)) == numel(thisRDM)
+        % Then it's in ltv form
+        % So we've got a symmetric RDM
+        % Square it
+        thisRDM = squareform(thisRDM); % squareform leaves 0s on the diagonal, which is what we want
+        RDMtype{RDMi} = '';
+    else
+        % Then it's a square RDM
+        if isequalwithequalnans(thisRDM, thisRDM')
+            % It's symmetric
+            if ~any(diag(thisRDM)) && ~any(isnan(diag(thisRDM))) % 0s on the diagonal
+                % It's a regular RDM
+                RDMtype{RDMi} = '';
+            elseif isnan(thisRDM(1,1)) % (1,1) is a nan
+                % It's a very lucky cv2RDM
+                RDMtype{RDMi} = '[cv2RDM] ';
+            else
+                % symmetric, not all 0s or all nans on diagonal
+                warning(['RDM ' num2str(RDMi) ' is symmetric, but has neither all 0s or all NaNs on the diagonal.  Not sure how to deal with this.']);
                 RDMtype{RDMi} = 'NonSymmetric/NaNs on Diagonal ';
             end
-		else
-			% It's not symmetric
-			if isnan(thisRDM(1,1)) % (1,1) is a nan
-				% It's a cv2RDM
-				RDMtype{RDMi} = '[cv2RDM] ';
-			else
-				% It's a sdRDM
-				RDMtype{RDMi} = '[sdRDM] ';
-			end
-		end
-	end
-
-	% Work out extreme values
-	offDiagonalEntries = thisRDM(eye(size(thisRDM, 1))==0);
-	thisMin = nanmin(offDiagonalEntries);
-	thisMax = nanmax(offDiagonalEntries);
-
-	allMin = min(allMin, thisMin);
-	allMax = max(allMax, thisMax);
-
-	cellRDMs{1,RDMi} = thisRDM;
-
+        else
+            % It's not symmetric
+            if isnan(thisRDM(1,1)) % (1,1) is a nan
+                % It's a cv2RDM
+                RDMtype{RDMi} = '[cv2RDM] ';
+            else
+                % It's a sdRDM
+                RDMtype{RDMi} = '[sdRDM] ';
+            end
+        end
+    end
+    
+    % Work out extreme values
+    offDiagonalEntries = thisRDM(eye(size(thisRDM, 1))==0);
+    thisMin = nanmin(offDiagonalEntries);
+    thisMax = nanmax(offDiagonalEntries);
+    
+    allMin = min(allMin, thisMin);
+    allMax = max(allMax, thisMax);
+    
+    cellRDMs{1,RDMi} = thisRDM;
+    
 end%for:RDMi
 
 % cellRDMs is now a [1 nRDMs]-sized cell of square RDMs (of various kinds and sizes)
 
 if isempty(clims)
-	clims = [allMin allMax];
+    clims = [allMin allMax];
 end%if:clims
 
 %% display similarity matrices
 h=figure(figI(1)); set(h,'Color','w');
 
 if numel(figI)<4
-    [nVerPan nHorPan]=paneling(nRDMs+1,aspect);
+    [, nHorPan]=paneling(nRDMs+1,aspect);
     subplotOffset=0;
     clf;
 else
@@ -98,12 +98,12 @@ end
 %% add color bar
 if showColorbar
     subplot(nVerPan,nHorPan,nRDMs+1+subplotOffset); cla;
-	tempRDM = cellRDMs{1,1};
-	n = size(tempRDM,1);
+    tempRDM = cellRDMs{1,1};
+    n = size(tempRDM,1);
     if rankTransform01
         imagesc(rankTransform(squareRDM(tempRDM),1),clims);  cla;
         ht=text(n/2,n/2,{['\bfeach similarity matrix (',num2str(n),'^2)'], 'separately rank-transformed', 'and scaled into [0,1]'},'HorizontalAlignment','Center','FontUnits','normalized');
-	else
+    else
         imagesc(tempRDM,clims);  cla;
         ht=text(n/2,n/2,{['\bfsimilarity matrices (',num2str(n),'^2)'],'not rank-transformed'},'HorizontalAlignment','Center','FontUnits','normalized');
     end
@@ -112,42 +112,42 @@ if showColorbar
     %colormapJet4Print;
     colorbar;
 end
-    
+
 for RDMi=1:nRDMs
-
-	subplot(nVerPan,nHorPan,RDMi+subplotOffset); cla;
-
-	thisRDM = cellRDMs{RDMi};
-
-	% Determine alpha data to make nans invisible
-	alpha = ~isnan(thisRDM);
-
-	if rankTransform01
-		image(scale01(rankTransform_equalsStayEqual(thisRDM,1)),'CDataMapping','scaled','AlphaData',alpha);
-		set(gca,'CLim',[0 1],'CLimMode','manual');
-	else
-		image(thisRDM,'CDataMapping','scaled','AlphaData',alpha);
-		set(gca,'CLim',clims,'CLimMode','manual');
-	end
-	
-	if exist('colourScheme', 'var')
-		colormap(gca, colourScheme);
-	end%if
-	
-	set(gca,'XTick',[],'YTick',[]);
-	
-	if isstruct(RDMs)
-		title(['\bf' RDMtype{RDMi} deunderscore(RDMs(RDMi).name)]);
-	elseif ~isempty(RDMtype{RDMi})
-		title(['\bf' RDMtype{RDMi}]);
-	end;
-	axis square off;
-	
-	% If image labels, add them
-	if exist('imagelabels','var') && ~isempty(imagelabels)
-		addImageSequenceToAxes(gca,imagelabels);
-	end
-	
+    
+    subplot(nVerPan,nHorPan,RDMi+subplotOffset); cla;
+    
+    thisRDM = cellRDMs{RDMi};
+    
+    % Determine alpha data to make nans invisible
+    alpha = ~isnan(thisRDM);
+    
+    if rankTransform01
+        image(scale01(rankTransform_equalsStayEqual(thisRDM,1)),'CDataMapping','scaled','AlphaData',alpha);
+        set(gca,'CLim',[0 1],'CLimMode','manual');
+    else
+        image(thisRDM,'CDataMapping','scaled','AlphaData',alpha);
+        set(gca,'CLim',clims,'CLimMode','manual');
+    end
+    
+    if exist('colourScheme', 'var')
+        colormap(gca, colourScheme);
+    end%if
+    
+    set(gca,'XTick',[],'YTick',[]);
+    
+    if isstruct(RDMs)
+        title(['\bf' RDMtype{RDMi} deunderscore(RDMs(RDMi).name)]);
+    elseif ~isempty(RDMtype{RDMi})
+        title(['\bf' RDMtype{RDMi}]);
+    end;
+    axis square off;
+    
+    % If image labels, add them
+    if exist('imagelabels','var') && ~isempty(imagelabels)
+        addImageSequenceToAxes(gca,imagelabels);
+    end
+    
 end
 
 

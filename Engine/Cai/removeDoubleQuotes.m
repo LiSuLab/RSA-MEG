@@ -3,7 +3,7 @@
 %
 % Cai Wingfield 1-2010
 
-function stringOut = removeDoubleQuotes(stringIn);
+function stringOut = removeDoubleQuotes(stringIn)
 
 stringOut = stringIn;
 

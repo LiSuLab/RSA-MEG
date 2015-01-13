@@ -208,7 +208,7 @@ if localOptions.barGraph
 	fontSize = 0.3/nRDMs;
 	
 	hb=barh(sortedDistsToData(end:-1:2));
-	set(gca,'YTick',[1:nRDMs-1]);
+	set(gca,'YTick',1:nRDMs-1);
 	set(gca,'YTickLabel',{RDMs(sortedIndices(end:-1:2)).name},'FontUnits','normalized','FontSize',fontSize);
 	
 	if strcmpi(localOptions.distanceMeasure,'euclidean')

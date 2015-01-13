@@ -24,8 +24,8 @@ if ~exist('options', 'var'), options = struct([]); end
 % square the RDMs
 rdmA=stripNsquareRDMs(rdmA);
 rdmB=stripNsquareRDMs(rdmB);
-[n,n]=size(rdmA);
-[nB,nB]=size(rdmB);
+[~,n]=size(rdmA);
+[~,nB]=size(rdmB);
 if n~=nB
     error('testRDMRelatedness_randomization: RDMs need to be of the same size.');
 end
@@ -65,7 +65,7 @@ if nConditionSets==1;
     conditionSet_LOG=(conditionSetIs_vector==conditionSetIndices(1));
     rdmA=rdmA(conditionSet_LOG,conditionSet_LOG);
     rdmB=rdmB(conditionSet_LOG,conditionSet_LOG);
-    [n,n]=size(rdmA);
+    [~,n]=size(rdmA);
     
     % vectorize the RDMs
     rdmA_vec=vectorizeRDM(rdmA);

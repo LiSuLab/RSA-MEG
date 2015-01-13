@@ -7,7 +7,7 @@
 %  
 %  Cai Wingfield 11-2009
 
-function RDMs = interleaveRDMs(RDMs, varargin);
+function RDMs = interleaveRDMs(RDMs, varargin)
 	
 if numel(varargin) == 0
 	transposed = false;

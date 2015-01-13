@@ -79,11 +79,10 @@ for test = 1:nTestRDMs
 end%for:test
 
 bootstrapWorked = true;
-theError = nan; % keep the interpreter happy
 
 try
-	[ds es pairwisePs] = bootstrapRDMComparisons(referenceRDMStack, testRDMStack, userOptions);
-catch
+	[ds, es, pairwisePs] = bootstrapRDMComparisons(referenceRDMStack, testRDMStack, userOptions);
+catch ex
 	bootstrapWorked = false;
 	fprintf(' Bootstrap failed! (Perhaps consider not resampling conditions?)\n');
 	titleString{2} = [titleString{2} ' (Bootstrap FAILED)'];
@@ -93,7 +92,7 @@ catch
 end%try
 
 
-[sortedRs sortedIs] = sort(ds);
+[sortedRs, sortedIs] = sort(ds);
 sortedEs = es(sortedIs);
 if bootstrapWorked
 	sortedPairwisePs = pairwisePs(sortedIs, sortedIs);
@@ -106,7 +105,7 @@ fprintf(['Calculating p-values via permutation tests (' num2str(userOptions.sign
 averageReferenceRDM = sum(referenceRDMStack, 3) ./ size(referenceRDMStack, 3);
 
 for test = 1:nTestRDMs
-	[r_ignore, ps(test), p_ignore]=testRDMrelatedness_randomization_cw(averageReferenceRDM, testRDMs(test).RDM, struct('nSignificanceTestPermutations', userOptions.significanceTestPermutations));
+	[~, ps(test), ~]=testRDMrelatedness_randomization_cw(averageReferenceRDM, testRDMs(test).RDM, struct('nSignificanceTestPermutations', userOptions.significanceTestPermutations));
 end%for:test
 
 sortedPs = ps(sortedIs);
