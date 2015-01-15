@@ -121,11 +121,11 @@ for k = 1:length(vertices)
             currentData = zeros(size(tempMesh, 1), size(tempMesh, 2) * size(tempMesh, 3)); % (data, conditions, sessions)
             
             % combining session-wise trials
-            k=1;
+            kk = 1;
             for j = 1:size(tempMesh,2)
                 for i = 1:userOptions.nSessions
-                    currentData(:,k) = (tempMesh(:,j,i));
-                    k=k+1;
+                    currentData(:, kk) = (tempMesh(:, j, i));
+                    kk = kk + 1;
                 end
             end
             
