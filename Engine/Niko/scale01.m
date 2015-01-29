@@ -9,10 +9,13 @@ function Xscaled=scale01(X,range)
 %       shifting, rather than min(X(:)) and max(X(:)).
 
 if ~exist('range','var')
-    mn=min(X(:)); mx=max(X(:));
+    mn = min(X(:));
+    mx = max(X(:));
 else
-    mn=min(range(:)); mx=max(range(:));
-end    
-Xscaled=(X-mn)./(mx-mn);
+    mn = min(range(:));
+    mx = max(range(:));
+end
+
+Xscaled = (X-mn)./(mx-mn);
 
 

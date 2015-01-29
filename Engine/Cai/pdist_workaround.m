@@ -14,7 +14,7 @@ else
 	% catch errors
 	if numel(size(X)) > 2, error('(!) Input matrix must be 2-dimensional!'); end
 
-	[nRows nColumns] = size(X);
+	[nRows, nColumns] = size(X);
 
 	yIndex = 1;
 	

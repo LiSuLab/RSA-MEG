@@ -86,7 +86,7 @@ end%if:clims
 h=figure(figI(1)); set(h,'Color','w');
 
 if numel(figI)<4
-    [, nHorPan]=paneling(nRDMs+1,aspect);
+    [nVerPan, nHorPan]=paneling(nRDMs+1,aspect);
     subplotOffset=0;
     clf;
 else
@@ -111,6 +111,10 @@ if showColorbar
     axis square off;
     %colormapJet4Print;
     colorbar;
+    
+    if exist('colourScheme', 'var')
+        colormap(gca, colourScheme);
+    end%if
 end
 
 for RDMi=1:nRDMs

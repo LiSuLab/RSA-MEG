@@ -39,7 +39,7 @@ function figureRDMRelationships(RDMs, userOptions, localOptions)
 % warning('off', 'IgnoringExtraEntries');
 
 RDMs=squareRDMs(RDMs);
-[n,n]=size(squareRDM(RDMs(1).RDM));
+[~,n]=size(squareRDM(RDMs(1).RDM));
 
 if ~exist('localOptions','var'), localOptions.rankTransform=true; end
 
