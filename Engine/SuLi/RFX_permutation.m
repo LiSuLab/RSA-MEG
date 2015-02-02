@@ -79,6 +79,7 @@ if overwriteFlag
                 toss = (rand(1) > 0.5)*2-1;
                 rho(subjectNumber,:,:) = squeeze(all_rho(subjectNumber,:,:)).*toss;
             end
+            
             [h,p,ci,stats] = ttest(rho);
             t_value = squeeze(stats.tstat);
             
