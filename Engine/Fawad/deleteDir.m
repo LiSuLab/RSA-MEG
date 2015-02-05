@@ -2,13 +2,13 @@
 
 function deleteDir(userOptions)
 
-    if (userOptions.keepTMaps)
+    if (~userOptions.keepTMaps)
         dirToDel= fullfile(userOptions.rootPath, '/Maps');
-        rmdir(dirToDel);
+        rmdir(dirToDel, 's');
     end
     
-    if (userOptions.keepImageData)
+    if (~userOptions.keepImageData)
         dirToDel= fullfile(userOptions.rootPath, '/ImageData');
-        rmdir(dirToDel);
+        rmdir(dirToDel, 's');
     end
 end
