@@ -320,8 +320,9 @@ userOptions.criterion = 'metricstress';
 userOptions.colourScheme = jet(128); 
 
 %Redundant information 
-userOptions.keepTMaps= true;
-userOptions.keepImageData= true;
+userOptions.deleteTMaps_Dir= false;
+userOptions.deleteImageData_Dir= false;
+userOptions.deletePerm= true;
 
 % How should figures be outputted?
 userOptions.displayFigures = true;
