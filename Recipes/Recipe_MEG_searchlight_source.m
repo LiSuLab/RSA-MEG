@@ -118,8 +118,8 @@ end
 %%%%%%%%%%%%%%%%%%%%
 %% Delete Selected Directories%%
 %%%%%%%%%%%%%%%%%%%%
-if (userOptions.keepTMaps || userOptions.keepImageData )
-    deleteDir(userOptions);
+if (userOptions.deleteTMaps_Dir || userOptions.deleteImageData_Dir || userOptions.deletePerm)
+    deleteDir(userOptions, Models);
 end
 
 %%%%%%%%%%%%%%%%%%%%
