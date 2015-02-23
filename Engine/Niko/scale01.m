@@ -9,13 +9,20 @@ function Xscaled=scale01(X,range)
 %       shifting, rather than min(X(:)) and max(X(:)).
 
 if ~exist('range','var')
-    mn = min(X(:));
-    mx = max(X(:));
+    % Get the top and bottom of the scale from X
+    mini = min(X(:));
+    maxi = max(X(:));
 else
-    mn = min(range(:));
-    mx = max(range(:));
-end
+    % Get the top and bottom of the scale from 'range'
+    mini = min(range(:));
+    maxi = max(range(:));
+end%if
 
-Xscaled = (X-mn)./(mx-mn);
-
-
+% If the matrix is constant (which is possible), or the specified range is
+% constant (which shouldn't be allowed), then we can't scale by the width
+% of the range, so we put every entry at 0
+if maxi == mini
+    Xscaled = zeros(size(X));
+else
+    Xscaled = (X - mini) ./ (maxi - mini);
+end%if
