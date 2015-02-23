@@ -2,12 +2,12 @@
 
 function deleteDir(userOptions, Models)
 
-    if (~userOptions.keepTMaps_Dir)
+    if (userOptions.deleteTMaps_Dir)
         dirToDel= fullfile(userOptions.rootPath, '/Maps');
         rmdir(dirToDel, 's');
     end
     
-    if (~userOptions.keepImageData_Dir)
+    if (userOptions.deleteImageData_Dir)
         dirToDel= fullfile(userOptions.rootPath, '/ImageData');
         rmdir(dirToDel, 's');
     end
