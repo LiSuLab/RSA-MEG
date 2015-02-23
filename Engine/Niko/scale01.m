@@ -7,6 +7,9 @@ function Xscaled=scale01(X,range)
 %
 %       if range is given, min(range) and max(range) define the scaling and
 %       shifting, rather than min(X(:)) and max(X(:)).
+%
+%       if all entries in the matrix are the same, the result is an
+%       all-zeros matrix of the same size.
 
 if ~exist('range','var')
     % Get the top and bottom of the scale from X
