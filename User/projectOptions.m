@@ -319,9 +319,11 @@ userOptions.criterion = 'metricstress';
 % What is the colourscheme for the RDMs?
 userOptions.colourScheme = jet(128); 
 
-%Redundant information 
-userOptions.keepTMaps= true;
-userOptions.keepImageData= true;
+% Set any of the following to true to delete files saved as work-in-progress
+% throughout the analysis. This will save space.
+userOptions.deleteTMaps_Dir= false;
+userOptions.deleteImageData_Dir= false;
+userOptions.deletePerm= true;
 
 % How should figures be outputted?
 userOptions.displayFigures = true;
