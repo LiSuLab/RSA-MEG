@@ -58,7 +58,7 @@ end%if
 %% Create the permuted labels
 
 % Create a [nPermutations nConditions]-matrix where each row is a new random permutation
-[~, permutationLables] = sort(rand(nPermutations,nConditions),2);
+[ignore, permutationLables] = sort(rand(nPermutations,nConditions),2);
 
 % Add the identity permutation on top, then sort the order of the remaining permutations lexicographically
 permutationLables = unique([1:nConditions;permutationLables],'rows');
@@ -85,12 +85,12 @@ switch correlationType
 	case {'Correlation', 'Pearson'}
 		RDMaRand = sum((RDMaRand-repmat(mean(RDMaRand),rows,1)).*repmat(RDMb-mean(RDMb),1,columns))./((std(RDMaRand).*std(RDMb)).*(rows-1));
 	case {'Spearman', 'Rank'}
-		[RDMaRand(:), ~] = tiedrank(RDMaRand(:));
+		[RDMaRand(:), ignore] = tiedrank(RDMaRand(:));
 		RDMaRand = sum((RDMaRand-repmat(mean(RDMaRand),rows,1)).*repmat(RDMb-mean(RDMb),1,columns))./((std(RDMaRand).*std(RDMb)).*(rows-1));
 end%switch:correlationType
 
 % Position of real correlation in permuted distribution
-[~, referenceIndices] = sort(RDMaRand);
+[ignore, referenceIndices] = sort(RDMaRand);
 p = max([1-(find(referenceIndices == 1) / columns) 1 / columns]);
 
 %% %%%%%%%% %%

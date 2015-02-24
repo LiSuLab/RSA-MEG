@@ -105,7 +105,7 @@ fprintf(['Calculating p-values via permutation tests (' num2str(userOptions.sign
 averageReferenceRDM = sum(referenceRDMStack, 3) ./ size(referenceRDMStack, 3);
 
 for test = 1:nTestRDMs
-	[~, ps(test), ~]=testRDMrelatedness_randomization_cw(averageReferenceRDM, testRDMs(test).RDM, struct('nSignificanceTestPermutations', userOptions.significanceTestPermutations));
+	[ignore, ps(test), ignore] =testRDMrelatedness_randomization_cw(averageReferenceRDM, testRDMs(test).RDM, struct('nSignificanceTestPermutations', userOptions.significanceTestPermutations));
 end%for:test
 
 sortedPs = ps(sortedIs);

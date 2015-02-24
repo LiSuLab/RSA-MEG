@@ -14,11 +14,11 @@ function rhos = vSpeaman(a, b)
 
 	% Rank a and b
 	
-	[~, aIndices] =  sort(a);
-	[~, aRanks] = sort(aIndices);
+	[ignore, aIndices] =  sort(a);
+	[ignore, aRanks] = sort(aIndices);
 	
-	[~, bIndices] =  sort(b);
-	[~, bRanks] = sort(bIndices);
+	[ignore, bIndices] =  sort(b);
+	[ignore, bRanks] = sort(bIndices);
 	
 	% Now for the pairwise thing
 	

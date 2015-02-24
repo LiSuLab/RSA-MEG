@@ -30,7 +30,7 @@ if userOptions.sensorLevelAnalysis
     
     %
     % Using evalc supresses output!
-    [~, allMEGData] = evalc('fiff_read_evoked(readPath)');
+    [ignore, allMEGData] = evalc('fiff_read_evoked(readPath)');
     
     samplingRate = allMEGData.info.sfreq/1000; % ms
     

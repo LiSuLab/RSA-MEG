@@ -13,7 +13,7 @@ nonNan_LOG = ~isnan(mat);
 set = mat(nonNan_LOG);
 
 % Use the sort trick to rank the values from highest to lowest
-[~, sortedIs] = sort(set);
+[ignore, sortedIs] = sort(set);
 
 % Preallocate a NaN matrix the size of the original
 % We'll fill in the non-NaN entries, leaving the originally ignored NaNs

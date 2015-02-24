@@ -101,7 +101,7 @@ if overwriteFlag
 
 				% Then read the brain data (for this session, condition)
 				readPath = replaceWildcards(userOptions.betaPath, '[[betaIdentifier]]', betas(session, condition).identifier, '[[subjectName]]', thisSubject);
-				[~, allMEGData] = evalc('fiff_read_evoked(readPath)'); % Using evalc supresses output!
+				[ignore, allMEGData] = evalc('fiff_read_evoked(readPath)'); % Using evalc supresses output!
 				
 				nChannels = numel(allMEGData.info.chs);
 				[EEGChannelsCell{1:nChannels}] = deal(allMEGData.info.chs.kind);

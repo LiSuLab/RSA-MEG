@@ -31,7 +31,7 @@ nSkippedVols = 0;
 monitor = 0;
 scaleTrialResponseTo1 = 1;
 
-[X,~,~,~] = generateCognitiveModel_fastButTrialsNeedToStartOnVols(sequence,simulationOptions.stimulusDuration*1000,simulationOptions.trialDuration*1000,nTRvols,simulationOptions.TR*1000,nSkippedVols,monitor,scaleTrialResponseTo1);
+[X,ignore,ignore,ignore] = generateCognitiveModel_fastButTrialsNeedToStartOnVols(sequence,simulationOptions.stimulusDuration*1000,simulationOptions.trialDuration*1000,nTRvols,simulationOptions.TR*1000,nSkippedVols,monitor,scaleTrialResponseTo1);
 
 nTimePoints = size(X,1);
 sig = sqrt(simulationOptions.scannerNoiseLevel);
@@ -44,7 +44,7 @@ for o = 1:nNoisyPatterns
 	E = randn(nTimePoints, nVoxels);
 	E = sig * E;
 
-	[E, ~] = spatiallySmooth4DfMRI_mm(E, simulationOptions.volumeSize_vox, simulationOptions.spatiotemporalSmoothingFWHM_mm_s(1:3), simulationOptions.voxelSize_mm);
+	[E, ignore] = spatiallySmooth4DfMRI_mm(E, simulationOptions.volumeSize_vox, simulationOptions.spatiotemporalSmoothingFWHM_mm_s(1:3), simulationOptions.voxelSize_mm);
 
 	% Smooth across time
 	E = temporallySmoothTimeSpaceMatrix(E, simulationOptions.spatiotemporalSmoothingFWHM_mm_s(4) / simulationOptions.TR);
