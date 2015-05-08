@@ -1,4 +1,4 @@
-function [smm_rs, smm_ps, searchlightRDMs] = searchlightMapping_MEG_source(singleMesh, Models, userOptions)
+function [smm_rs, smm_ps, smm_bs, searchlightRDMs] = searchlightMapping_MEG_source(singleMesh, Models, userOptions)
 
 %  [smm_rs, smm_ps, n, searchlightRDMs] = searchlightMapping_MEG_source(singleMesh, Models, mask, userOptions, localOptions)
 %  based on Li Su's script
@@ -150,6 +150,8 @@ for k = 1:length(vertices)
             searchlightRDMs = nan(1);
         end
         
+        [bs, ds] = glmfit(modelRDMs_utv, searchlightRDM, 'normal');
+        
         if userOptions.partial_correlation
             [rs, ps] = partialcorr(searchlightRDM', modelRDMs_utv', control_for_modelRDMs', 'type', userOptions.distanceMeasure, 'rows','pairwise');
         else
@@ -162,6 +164,7 @@ for k = 1:length(vertices)
         
         smm_ps(vertex, t, :) = ps;
         smm_rs(vertex, t, :) = rs;
+        smm_bs(vertex, t, :) = bs(2:end);
         
     end%for:t
     
