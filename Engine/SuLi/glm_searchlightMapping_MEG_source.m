@@ -104,7 +104,7 @@ for k = 1:length(vertices)
         
         searchlightRDM = vectorizeRDM(searchlightRDM);
         
-        [bs, d] = glmfit(modelRDMs_utv, searchlightRDM, 'normal');
+        [bs, d] = glmfit(modelRDMs_utv', searchlightRDM', 'normal');
         
         % ignoring that all-1s predictor
         smm_bs(vertex, t, :) = bs(2:end);
