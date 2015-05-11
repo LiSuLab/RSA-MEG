@@ -62,11 +62,11 @@ if overwriteFlag
         bMetadataStruct = userOptions.STCmetaData;
         dMetadataStruct = userOptions.STCmetaData;
         
-        for model_1 = 1:nModels
+        for model_i = 1:nModels
             
-            bMetadataStruct.data = thisSubjectBs.(chi)(:,:,modelNumber);
+            bMetadataStruct.data = thisSubjectBs.(chi)(:,:,model_i);
             
-            modelName = spacesToUnderscores(Models(modelNumber).name);
+            modelName = spacesToUnderscores(Models(model_i).name);
             
             modelDir = fullfile(userOptions.rootPath, 'Maps', modelName);
             gotoDir(fullfile(userOptions.rootPath, 'Maps'), modelName);
