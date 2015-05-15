@@ -85,11 +85,10 @@ if overwriteFlag
         end
            
         dMetadataStruct.data = thisSubjectDs.(chi); 
-        mne_write_stc_file1([outputPFilename '-' lower(chi) 'h.stc'], dMetadataStruct);
+        mne_write_stc_file1([outputDFilename '-' lower(chi) 'h.stc'], dMetadataStruct);
         
         userOptions = rmfield(userOptions, 'maskIndices');
         userOptions = rmfield(userOptions, 'chi');
-        clear thisSubjectRs thisSubjectPs pMetadataStruct searchlightRDMs sourceMeshes.(chi) maskedMesh;
         
     end%for:chirality
     
