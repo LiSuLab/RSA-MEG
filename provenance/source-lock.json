@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-09-25",
+  "purpose": "Historical source locks and attribution, not a checksum of this package or proof of method novelty",
+  "sources": [
+    {
+      "id": "nili2014-software-s1",
+      "kind": "published_supplement",
+      "url": "https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1003553.s006&type=supplementary",
+      "doi": "10.1371/journal.pcbi.1003553",
+      "archive_filename": "rsatoolbox.zip",
+      "sha256": "7bc20af5769ecdd6befc0348adcfaecb57887d5d6590c99481277522a6518d5c",
+      "bytes": 10723060,
+      "role": "2014 published frozen baseline; not the later develop branch"
+    },
+    {
+      "id": "rsa-meg-master",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/RSA-MEG",
+      "commit": "685e4912d254742e3b4a6d348ded86e97d8867d7",
+      "url": "https://github.com/LiSuLab/RSA-MEG/tree/685e4912d254742e3b4a6d348ded86e97d8867d7",
+      "role": "2015 standalone MEG history; not copied wholesale"
+    },
+    {
+      "id": "rsa-meg-glm",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/RSA-MEG",
+      "commit": "29861a9170d79c220957e8f71c29ec92150c8d88",
+      "url": "https://github.com/LiSuLab/RSA-MEG/tree/29861a9170d79c220957e8f71c29ec92150c8d88",
+      "role": "separate early GLM prototype"
+    },
+    {
+      "id": "lisulab-feature-meg-base",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/rsatoolbox",
+      "commit": "c0dfd32f809eb816c4e94ae765feab0e4d12ab5a",
+      "url": "https://github.com/LiSuLab/rsatoolbox/tree/c0dfd32f809eb816c4e94ae765feab0e4d12ab5a",
+      "role": "2018 integrated legacy +rsa/+meg reference; 48 MATLAB functions traced in migration.tsv"
+    },
+    {
+      "id": "official-meg-pre-alpha",
+      "kind": "git_tag",
+      "repository": "https://github.com/rsagroup/rsatoolbox_matlab",
+      "tag": "meg-pre-alpha",
+      "tag_object": "d4e60ed74022713e0769586cd3d96970921826dd",
+      "peeled_commit": "3d847f77d65814a96abb104dcb26d96a3835cd07",
+      "url": "https://github.com/rsagroup/rsatoolbox_matlab/tree/3d847f77d65814a96abb104dcb26d96a3835cd07",
+      "role": "2015 publicly retained early MEG tag; not a stable release"
+    },
+    {
+      "id": "official-matlab-develop",
+      "kind": "git_commit",
+      "repository": "https://github.com/rsagroup/rsatoolbox_matlab",
+      "commit": "91ad43359c8a6355de1dd726e69038b7e798720a",
+      "url": "https://github.com/rsagroup/rsatoolbox_matlab/tree/91ad43359c8a6355de1dd726e69038b7e798720a",
+      "role": "2018 later generic MATLAB core; distinct from published 2014 Software S1"
+    },
+    {
+      "id": "tonotopy",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/rsa-tonotopic-mapping",
+      "commit": "d260c75d529c2152962ba5d9f45e692a78189d2a",
+      "url": "https://github.com/LiSuLab/rsa-tonotopic-mapping/tree/d260c75d529c2152962ba5d9f45e692a78189d2a",
+      "role": "paper-specific application history; no direct inclusion"
+    },
+    {
+      "id": "phonetic",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/rsa-phonetic-mapping",
+      "commit": "e5df256f42b7c635f1453b1242578295aa8243f7",
+      "url": "https://github.com/LiSuLab/rsa-phonetic-mapping/tree/e5df256f42b7c635f1453b1242578295aa8243f7",
+      "role": "paper-specific GMM/phonetic application history; no direct inclusion"
+    },
+    {
+      "id": "phonetic-plos-fix",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/rsa-phonetic-mapping",
+      "commit": "e5ce4e7c36d464ddac4e32549e7ab0046d577ff7",
+      "url": "https://github.com/LiSuLab/rsa-phonetic-mapping/tree/e5ce4e7c36d464ddac4e32549e7ab0046d577ff7",
+      "role": "non-default STC naming fix inspected; no direct inclusion"
+    },
+    {
+      "id": "dnn",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/rsa-dnn-mapping",
+      "commit": "21f5de2e5da836019d376176c75f47f995173dc5",
+      "url": "https://github.com/LiSuLab/rsa-dnn-mapping/tree/21f5de2e5da836019d376176c75f47f995173dc5",
+      "role": "DNN application with 14 reusable candidates examined; no direct inclusion"
+    },
+    {
+      "id": "htk-postprocessing",
+      "kind": "git_commit",
+      "repository": "https://github.com/LiSuLab/htk-postprocessing",
+      "commit": "51939516ed3c7b61ef5bf1075fac07e7ceedc01d",
+      "url": "https://github.com/LiSuLab/htk-postprocessing/tree/51939516ed3c7b61ef5bf1075fac07e7ceedc01d",
+      "role": "application/model-side postprocessing history, not general M/EEG core"
+    },
+    {
+      "id": "python-rsatoolbox",
+      "kind": "git_commit",
+      "repository": "https://github.com/rsagroup/rsatoolbox",
+      "commit": "38403b86ef2d9f0287ff4691794db2afd9577184",
+      "url": "https://github.com/rsagroup/rsatoolbox/tree/38403b86ef2d9f0287ff4691794db2afd9577184",
+      "role": "independent contemporary comparator; main checked 2026-09-20, not a MATLAB dependency"
+    }
+  ],
+  "licensing_note": "Historical standalone RSA-MEG contains BSD-style Documentation/LICENCE.txt; the later MATLAB RSA toolbox contains LGPL-v3 Documentation/license.txt. Application repositories require file-by-file rights review and have no universal MIT grant. This package is an independently written implementation, not a wholesale import of those sources. See COPYING for this package when finalized.",
+  "method_priority_note": "Su et al. 2012 and Su et al. 2014 precede this release in MEG/EEG spatiotemporal RSA. Software availability, method priority, code lineage, and current validation are separate claims."
+}

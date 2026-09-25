@@ -1,0 +1,24 @@
+RSA-MEEG 0.1.0-dev
+
+This development release reimplements and consolidates the scientific workflow
+of LiSuLab/RSA-MEG and the LiSuLab/rsatoolbox feature-meg-base extension.
+Original RSA toolbox copyright and licence notices are retained in LICENSES.
+The release is distributed under GNU LGPL version 3 only, together with the
+GPL version 3 terms incorporated by LGPL. See COPYING.LESSER and COPYING.
+
+Original RSA-MEG notice:
+Copyright (c) 2010, Members of the RSA development group, Medical Research
+Council Cognition and Brain Sciences Unit. See LICENSES/RSA-MEG-original.txt.
+
+Scientific and historical contributions remain attributable to their original
+authors. See provenance/source-lock.json, provenance/migration.tsv and
+docs/REFERENCES.md. Independent implementations of methods discussed in
+application repositories do not assert ownership of their original methods.
+Third-party somtoolbox, HTK, shadedErrorBar and CBU infrastructure are not bundled.
+
+The contributor entity in CITATION.cff identifies this software collective; it
+does not settle authorship of a future research paper or assign contributors'
+individual rights. Final paper author order and release DOI are not invented.
+
+This is research software; it is not suitable for clinical use. It is supplied
+without warranty under the terms of the included licences.

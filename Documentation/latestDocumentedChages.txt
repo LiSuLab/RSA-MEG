@@ -1,6 +1,0 @@
-Not a major release, just a "nightly build".
-
-1.	
-________________________________________________________________________________
-For a more flexible and comprehensive list of changes, try using "svn diff" from
-the terminal.  Type "svn diff --help" for usage details.

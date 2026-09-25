@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Cite this software version and commit, plus the scientific methods actually used; see docs/REFERENCES.md."
+type: software
+title: "RSA-MEEG: MATLAB workflows for M/EEG representational similarity analysis"
+authors:
+  - name: "RSA-MEEG contributors"
+version: "0.1.0-dev"
+date-released: "2026-09-25"
+repository-code: "https://github.com/LiSuLab/RSA-MEG/tree/rsa-meeg"
+license: LGPL-3.0-only
+abstract: "A development implementation of explicit-time sensor/source M/EEG RSA, condition-aligned model mapping, and permutation inference."
