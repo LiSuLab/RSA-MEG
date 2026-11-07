@@ -2,7 +2,7 @@
 
 An executable development release of the LiSuLab M/EEG representational similarity workflow, with explicit time/condition labels, general sensor and source neighborhoods, model mapping, and permutation inference.
 
-**Version 0.1.0-dev.** Tested in MATLAB R2026a on Apple Silicon. The MATLAB analysis core and synthetic examples require only base MATLAB. Other MATLAB versions and operating systems have not been tested. This is a development branch, not a claim of reproducing the historical manuscript or introducing RSA/ssRSA for the first time.
+**Version 0.2.0-dev.** Tested in MATLAB R2026a on Apple Silicon. The MATLAB analysis core and synthetic examples require only base MATLAB. Other MATLAB versions and operating systems have not been tested. This is a development branch, not a claim of reproducing the historical manuscript or introducing RSA/ssRSA for the first time.
 
 ## Download and run
 
@@ -10,7 +10,8 @@ Download the [rsa-meeg branch ZIP](https://github.com/LiSuLab/RSA-MEG/archive/re
 
 ```matlab
 setup_rsa_meeg
-out = demo_synthetic('eeg');     % also 'mag', 'grad', or 'source'
+out = demo_synthetic('eeg');             % also 'mag', 'grad', or 'source'
+res = demo_eeg_meg_spatial_rescue(false); % V2: ISF vs. ASF and EEG spatial rescue
 results = run_tests;
 ```
 
@@ -29,12 +30,14 @@ ds = rsa_meeg.dataset(X, times_seconds, condition_ids, ...
     'Positions', electrode_xyz, 'PositionUnit', 'mm', ...
     'Reference', 'describe the reference already applied');
 neighbors = rsa_meeg.geometry.neighborhoods(ds.positions_mm, 30);
+P = rsa_meeg.rdm.shrinkage_precision(ds, neighbors, ...
+    'Method', 'ledoit-wolf', 'Mode', 'spatiotemporal', 'WindowSamples', 9);
 R = rsa_meeg.rdm.searchlight(ds, neighbors, ...
-    'WindowSamples', 9, 'StepSamples', 4, 'Metric', 'correlation', ...
-    'CenterIds', ds.feature_ids);
+    'WindowSamples', 9, 'StepSamples', 4, 'Metric', 'crossnobis', ...
+    'Precision', P, 'CenterIds', ds.feature_ids);
 model.condition_ids = R.condition_ids;
 model.values = my_model_vector; % lexicographic pairs in R.pairs
-fit = rsa_meeg.mapping.compare(R, model, 'Correlation', 'kendall-a');
+fit = rsa_meeg.mapping.compare(R, model, 'Correlation', 'spearman');
 ```
 
 Electrode radius is in millimeters in the specified coordinate frame; this example's radius/window are illustrative, not recommended physiological defaults. Supply a single neighborhood for ROI RSA. Analyze EEG, magnetometers and gradiometers separately; incompatible physical units are not silently pooled. Source neighborhoods can be restricted by hemisphere and use nonconsecutive vertex identifiers. Crossnobis requires independent folds and externally estimated precision in the actual analysis pattern space.
@@ -44,11 +47,12 @@ Electrode radius is in millimeters in the specified coordinate frame; this examp
 | Stage | Functions |
 |---|---|
 | Input | array Dataset; in-memory epoched EEGLAB/FieldTrip adapters; STC, FreeSurfer triangular surface and ASCII label readers; STC writer |
+| Simulation | recursive hierarchical condition covariance and multivariate pattern generator (`sim.generate_beta_patterns`); 30-scale cortical geodesic/Euclidean Perlin spatial texture and hybrid sensor noise simulator (`sim.cortical_perlin_noise`) |
 | Geometry | arbitrary coordinate-radius neighborhoods; triangle-mesh adjacency; space × time adjacency |
-| RDMs | spatial, temporal and spatiotemporal patterns; ROI/searchlight windows; correlation, normalized squared Euclidean and crossnobis distances; condition-aligned descriptive subject averaging |
-| Models | condition-aligned Pearson/Spearman/Kendall tau-a; explicit dynamic-model lags; static/dynamic multiple-model OLS; center-batched static mapping |
+| RDMs | spatial, temporal and spatiotemporal patterns; ROI/searchlight windows; correlation, normalized squared Euclidean and crossnobis distances; Ledoit–Wolf/OAS/fixed-shrinkage spatial and spatiotemporal precision estimation (`rdm.shrinkage_precision`); condition-aligned descriptive subject averaging |
+| Models | condition-aligned Pearson/Spearman/Kendall tau-a; partial Spearman/Pearson controlling for covariate RDMs (`mapping.partial_compare`); explicit dynamic-model lags; static/dynamic multiple-model OLS; center-batched static mapping |
 | Inference | condition-label FFX permutation; subject sign-flip max-t, signed cluster mass and TFCE; BH adjustment |
-| Examples and checks | synthetic EEG/mag/grad/source; optional genuine M/EEG excerpt; numerical/IO/independent review tests; null calibration; legacy tau-a regression |
+| Examples and checks | synthetic EEG/mag/grad/source; ISF vs. ASF and EEG spatial rescue under multi-scale Perlin noise (`demo_eeg_meg_spatial_rescue`); optional genuine M/EEG excerpt; numerical/IO/independent review tests; null calibration; legacy tau-a regression |
 
 See [API](docs/API.md), [scientific methods](docs/METHODS.md), [validation](docs/VALIDATION.md), [migration](docs/MIGRATION.md), and [scientific scope](docs/SCIENTIFIC_SCOPE.md). Group inference requires aligned analysis centers and windows; individual source meshes cannot simply be stacked across subjects.
 

@@ -18,9 +18,16 @@ Do not concatenate unregistered subjects along features. Compute individual RDMs
 - `io.read_stc` / `io.write_stc`: file IDs stay **zero-based**, local MATLAB indices remain one-based. Data is vertex × time; STC has float32 precision and uniform times. Existing files require `Overwrite=true`; single-sample output requires `TimeStep`.
 - `io.read_surface`: FreeSurfer binary triangular format; returned faces are one-based. `io.read_label`: ASCII labels retain zero-based vertex IDs. Map IDs with `ismember`, never use vertex numbers directly as local array subscripts.
 
+## Simulation (`+sim`)
+
+- `[B, cov_true, rdm_true] = sim.generate_beta_patterns(cluster_spec, n_features, ...)`: recursive hierarchical condition covariance and multivariate pattern generator (adapted from Li Su & Cai Wingfield's `generateBetaPatterns`). Accepts nested cell-tree cluster specifications such as `{0.6, {0.3, 5}, {0.3, 5}, {0.3, 5}, {0.3, 5}}` (or a `[K x K]` symmetric positive-definite covariance matrix). Options include `Parameterization` (`auto`, `spread`, `correlation`), `NormalizeDiagonal` (default `true`), `ExactCovariance` (default `false`), `RDMMetric` (`sqeuclidean`, `correlation`), `Scale`, and `Seed`. Returns `[K x n_features]` patterns `B`, `[K x K]` condition covariance `cov_true`, and labeled `rdm_true` struct directly usable in `mapping.compare` and `mapping.partial_compare`.
+- `[noise_data, info] = sim.cortical_perlin_noise(positions_mm, n_observations, n_times, ...)`: multi-scale cortical geodesic or Euclidean Perlin continuous spatial texture generator (default 30 spatial scales `ScalesMm = linspace(2, 60, 30)` with `1/f` spectral weighting `SpectralSlope = 1.0` and row-normalized Gaussian smoothing kernels) and hybrid sensor-noise simulator mixing cortical background activity with prestimulus sensor covariance Cholesky factor $L_m \mathbf{z}$ (`SensorNoiseCov`, `SensorNoiseChol`, `Leadfield`, `InverseOperator`, `HybridMix`).
+
 ## Geometry and RDMs
 
 `geometry.neighborhoods(positions_mm,radius_mm,'Hemisphere',hemi,'Centers',local_indices)` returns cells of local indices. Radius neighborhoods are Euclidean, not cortical geodesic neighborhoods. `geometry.mesh_adjacency(triangles,n_vertices)` accepts one-based local faces. `geometry.spacetime_adjacency(A,n_time)` connects the same spatial vertex across adjacent windows and uses A within each window. A must already encode hemisphere isolation; if windows have gaps, define the desired temporal graph explicitly.
+
+`[P, info] = rdm.shrinkage_precision(residuals_or_data, neighborhoods, ...)` estimates symmetric positive-definite noise precision matrices $\mathbf{P} = \hat{\Sigma}^{-1}$ for `crossnobis` searchlights using `Method` (`ledoit-wolf`, `oas`, `fixed` with `Shrinkage` $\lambda \in [0, 1]$, or `diagonal`). Accepts an `rsa_meeg.dataset` struct or a numeric residual/data array, optional `Neighborhoods`, `Mode` (`spatiotemporal`, `spatial`, `temporal`), `WindowSamples`, `BaselineWindow`, and `SubtractConditionMeans` (default `true`). When `Neighborhoods` is provided, returns a `1 x n_centers` cell array `P` that plugs directly into `rdm.searchlight(ds, hood, 'Metric', 'crossnobis', 'Precision', P)`.
 
 `rdm.searchlight(ds,neighbors,...)` options:
 
@@ -40,6 +47,8 @@ The RDM also records resolved `feature_indices`, `pattern_dimensions`, selected 
 ## Models
 
 `mapping.compare(R,model,'Correlation',...)` returns center × window × model. A labeled struct has `condition_ids` and `values` (pair × model); labels are reordered explicitly. A plain matrix assumes R's exact condition/pair order. Supported similarity: pearson, spearman (average ties), kendall-a (ties contribute zero).
+
+`mapping.partial_compare(R,target_model,control_models,'Correlation',...)` computes partial Spearman (rank-based) or partial Pearson RDM correspondence between `R` and `target_model` while partialling out one or more covariate RDMs in `control_models` (supplied as a numeric matrix, labeled struct, or cell array of models). Returns `out.values` (`center × window × target_model`), `out.n_controls`, and `out.n_pairs`. Rank-deficient control designs fail explicitly.
 
 `mapping.dynamic(R,model,model_times_s,lags_s,...)` requires pair × model-time × model. Convention: **neural window center = model time + lag**. Only time matches within `Tolerance` are used; unmatched samples stay NaN, with no extrapolation or lag-index substitution. Choose tolerance from known sampling precision, not to search for better fits. Output is center × neural-window × model × lag.
 
