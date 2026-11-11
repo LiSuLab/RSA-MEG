@@ -148,7 +148,7 @@ if ~isempty(o.Hemisphere)
         error('rsa_meeg:sim:Hemisphere', 'Hemisphere must provide one label per vertex.');
     end
     hemi = string(o.Hemisphere(:));
-    cross_hemi = bsxfun(@ne, hemi, hemi.');
+    cross_hemi = (hemi ~= hemi.');
     D(cross_hemi) = inf;
 end
 

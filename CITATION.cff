@@ -1,11 +1,15 @@
 cff-version: 1.2.0
-message: "Cite this software version and commit, plus the scientific methods actually used; see docs/REFERENCES.md."
+message: "Cite this software version and commit, plus the scientific methods used; see docs/REFERENCES.md."
 type: software
-title: "RSA-MEEG: MATLAB workflows for M/EEG representational similarity analysis"
+title: "RSA-MEEG: MATLAB and Python Toolbox for M/EEG Representational Similarity Analysis"
 authors:
-  - name: "RSA-MEEG contributors"
-version: "0.1.0-dev"
-date-released: "2026-09-25"
+  - name: "Jingmin An"
+  - name: "Cai Wingfield"
+  - name: "Chengxuan Li"
+  - name: "Andrew Thwaites"
+  - name: "Li Su"
+version: "0.2.0-v2"
+date-released: "2026-11-10"
 repository-code: "https://github.com/LiSuLab/RSA-MEG/tree/rsa-meeg"
 license: LGPL-3.0-only
-abstract: "A development implementation of explicit-time sensor/source M/EEG RSA, condition-aligned model mapping, and permutation inference."
+abstract: "Open-source MATLAB (+rsa_meeg and +rsa/+sim, +rdm, +mapping, +stats) and Python (rsa_meeg) toolbox for millisecond sensor- and source-space M/EEG representational similarity analysis, 30-scale cortical geodesic Perlin spatial frequency simulation, Ledoit-Wolf shrinkage-whitened crossnobis searchlights, three-tier zero-tie continuous speech RDM parameterization, analytical partial rank regression, and sign-flip cluster permutation inference."

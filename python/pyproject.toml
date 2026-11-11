@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rsa-meeg"
+version = "0.2.0"
+description = "RSA-MEEG Python and MATLAB Toolbox for M/EEG Representational Similarity Analysis (v0.2.0-v2)"
+readme = "../README.md"
+license = {text = "LGPL-3.0-only"}
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.20",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["rsa_meeg*"]

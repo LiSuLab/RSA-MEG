@@ -1,67 +1,86 @@
-# RSA-MEEG for MATLAB
+# RSA-MEEG Toolbox for MATLAB and Python (`v0.2.0-v2`)
 
-An executable development release of the LiSuLab M/EEG representational similarity workflow, with explicit time/condition labels, general sensor and source neighborhoods, model mapping, and permutation inference.
+Open-source MATLAB (`+rsa_meeg` and `+rsa/+sim, +rdm, +mapping, +stats`) and Python (`python/rsa_meeg`) toolbox accompanying the manuscript:
 
-**Version 0.2.0-dev.** Tested in MATLAB R2026a on Apple Silicon. The MATLAB analysis core and synthetic examples require only base MATLAB. Other MATLAB versions and operating systems have not been tested. This is a development branch, not a claim of reproducing the historical manuscript or introducing RSA/ssRSA for the first time.
+> **Representational similarity analysis of MEG and EEG data**  
+> Jingmin An, Cai Wingfield, Chengxuan Li, Andrew Thwaites, and Li Su (2026).  
+> Repository: [https://github.com/LiSuLab/RSA-MEG/tree/rsa-meeg](https://github.com/LiSuLab/RSA-MEG/tree/rsa-meeg)
 
-## Download and run
+**Version `0.2.0-v2`.** Tested in MATLAB R2026a and Python 3.11+ on Apple Silicon. The MATLAB analysis core and synthetic examples require only base MATLAB; the Python package requires only `numpy` and `scipy` (with `mne` and `matplotlib` for full-cohort BEM/MNE source reconstruction and publication figure rendering).
 
-Download the [rsa-meeg branch ZIP](https://github.com/LiSuLab/RSA-MEG/archive/refs/heads/rsa-meeg.zip), unzip, and in MATLAB change to its root:
+---
+
+## Quick Start
+
+### 1. MATLAB (`+rsa_meeg` and `+rsa`)
+
+In MATLAB, change to the repository root and run:
 
 ```matlab
 setup_rsa_meeg
-out = demo_synthetic('eeg');             % also 'mag', 'grad', or 'source'
-res = demo_eeg_meg_spatial_rescue(false); % V2: ISF vs. ASF and EEG spatial rescue
-results = run_tests;
+out = demo_synthetic('eeg', false);       % also 'mag', 'grad', or 'source'
+res = demo_eeg_meg_spatial_rescue(false); % V2: 64-condition ISF vs. ASF & EEG spatial rescue
+results = run_tests;                      % Executes the full MATLAB unit/integration test suite
 ```
 
-The example generates known synthetic representations, computes time-resolved local RDMs, compares a condition-labeled model, and tests the complete center × time family using independent subjects. No private files, cluster accounts, optional toolboxes or downloads are needed. Results are examples of computation, not biological observations.
-
-For a real EEG/MEG recording, follow [REAL_DATA.md](docs/REAL_DATA.md). A pinned 12 MB public MNE example is downloaded only on explicit request; Python is needed for that optional FIF-to-MAT conversion, not the MATLAB analysis core. The release does not distribute the underlying recording.
-
-## Analyze your data
+Example workflow with spatiotemporal Ledoit-Wolf shrinkage precision and partial Spearman RDM regression:
 
 ```matlab
-% X: observations x features x time. One subject at a time.
+% X: observations x features x time (one subject at a time)
 ds = rsa_meeg.dataset(X, times_seconds, condition_ids, ...
     'FoldIds', fold_ids, 'FeatureIds', channel_labels, ...
-    'FeatureTypes', repmat({'eeg'},1,size(X,2)), ...
-    'FeatureUnits', repmat({'V'},1,size(X,2)), ...
+    'FeatureTypes', repmat({'eeg'}, 1, size(X, 2)), ...
+    'FeatureUnits', repmat({'V'}, 1, size(X, 2)), ...
     'Positions', electrode_xyz, 'PositionUnit', 'mm', ...
-    'Reference', 'describe the reference already applied');
+    'Reference', 'average reference');
+
 neighbors = rsa_meeg.geometry.neighborhoods(ds.positions_mm, 30);
-P = rsa_meeg.rdm.shrinkage_precision(ds, neighbors, ...
+P = rsa.rdm.shrinkage_precision(ds, neighbors, ...
     'Method', 'ledoit-wolf', 'Mode', 'spatiotemporal', 'WindowSamples', 9);
-R = rsa_meeg.rdm.searchlight(ds, neighbors, ...
-    'WindowSamples', 9, 'StepSamples', 4, 'Metric', 'crossnobis', ...
-    'Precision', P, 'CenterIds', ds.feature_ids);
-model.condition_ids = R.condition_ids;
-model.values = my_model_vector; % lexicographic pairs in R.pairs
-fit = rsa_meeg.mapping.compare(R, model, 'Correlation', 'spearman');
+R = rsa.rdm.searchlight(ds, neighbors, ...
+    'WindowSamples', 9, 'StepSamples', 4, 'Mode', 'spatiotemporal', ...
+    'Metric', 'crossnobis', 'Precision', P, 'CenterIds', ds.feature_ids);
+
+fit = rsa.mapping.compare(R, target_model, 'Correlation', 'spearman');
+fit_partial = rsa.mapping.partial_compare(R, target_model, control_models, ...
+    'Correlation', 'spearman');
 ```
 
-Electrode radius is in millimeters in the specified coordinate frame; this example's radius/window are illustrative, not recommended physiological defaults. Supply a single neighborhood for ROI RSA. Analyze EEG, magnetometers and gradiometers separately; incompatible physical units are not silently pooled. Source neighborhoods can be restricted by hemisphere and use nonconsecutive vertex identifiers. Crossnobis requires independent folds and externally estimated precision in the actual analysis pattern space.
+### 2. Python (`python/rsa_meeg`)
 
-## What is included
+Install the Python package in editable mode and run the unit test suite:
 
-| Stage | Functions |
-|---|---|
-| Input | array Dataset; in-memory epoched EEGLAB/FieldTrip adapters; STC, FreeSurfer triangular surface and ASCII label readers; STC writer |
-| Simulation | recursive hierarchical condition covariance and multivariate pattern generator (`sim.generate_beta_patterns`); 30-scale cortical geodesic/Euclidean Perlin spatial texture and hybrid sensor noise simulator (`sim.cortical_perlin_noise`) |
-| Geometry | arbitrary coordinate-radius neighborhoods; triangle-mesh adjacency; space × time adjacency |
-| RDMs | spatial, temporal and spatiotemporal patterns; ROI/searchlight windows; correlation, normalized squared Euclidean and crossnobis distances; Ledoit–Wolf/OAS/fixed-shrinkage spatial and spatiotemporal precision estimation (`rdm.shrinkage_precision`); condition-aligned descriptive subject averaging |
-| Models | condition-aligned Pearson/Spearman/Kendall tau-a; partial Spearman/Pearson controlling for covariate RDMs (`mapping.partial_compare`); explicit dynamic-model lags; static/dynamic multiple-model OLS; center-batched static mapping |
-| Inference | condition-label FFX permutation; subject sign-flip max-t, signed cluster mass and TFCE; BH adjustment |
-| Examples and checks | synthetic EEG/mag/grad/source; ISF vs. ASF and EEG spatial rescue under multi-scale Perlin noise (`demo_eeg_meg_spatial_rescue`); optional genuine M/EEG excerpt; numerical/IO/independent review tests; null calibration; legacy tau-a regression |
+```bash
+pip install -e ./python
+python3 -m unittest discover -s ./python/tests -v
+```
 
-See [API](docs/API.md), [scientific methods](docs/METHODS.md), [validation](docs/VALIDATION.md), [migration](docs/MIGRATION.md), and [scientific scope](docs/SCIENTIFIC_SCOPE.md). Group inference requires aligned analysis centers and windows; individual source meshes cannot simply be stacked across subjects.
+### 3. Reproducing V2 Manuscript Figures & Tables (`reproducibility/`)
 
-The package does not perform acquisition preprocessing, artifact removal, forward/inverse modeling, automatic anatomical registration, or raw FIF reading inside MATLAB. Automatic best-lag selection, historical HTK training/export pipelines and paper-specific optimizations remain separate migration targets. No historical CBU email/cluster machinery is included.
+All Stage 1–3 experiment scripts (`v2_01` through `v2_10` and `v2_12`) and numerical figure sources for **Figures 1–8**, **Supplementary Figures S1–S10**, **Table 1**, and **Supplementary Tables S1–S6** are provided in [`reproducibility/`](reproducibility/README.md):
 
-## Provenance and citation
+```bash
+python3 reproducibility/scripts/v2_07_supervisor_robustness_and_zero_hallucination_audit.py
+python3 reproducibility/scripts/v2_09_render_v5_style_publication_figures.py
+python3 reproducibility/scripts/v2_10_render_v5_style_supplementary_figures.py
+```
 
-This branch consolidates the *analysis logic* of LiSuLab/RSA-MEG, the `feature-meg-base` fork and later mapping applications in a new `+rsa_meeg` API. It does not copy all historical files into the path. Each old file is assigned a migration disposition in [provenance/migration.tsv](provenance/migration.tsv); pinned sources are in [source-lock.json](provenance/source-lock.json).
+---
 
-Cite the software version/commit used, **Nili et al. (2014)** for the RSA toolbox foundations, **Su et al. (2014)** and the prior work it cites for source-space ssRSA, and the specific inference/distance methods used. See [CITATION.cff](CITATION.cff) and [references](docs/REFERENCES.md). A DOI/tagged stable release and final author attribution are still to be established by the maintainers.
+## Architecture Overview
 
-LGPL-3.0-only for this release; original notices are retained in [LICENSES](LICENSES). See [COPYING.LESSER](COPYING.LESSER), [COPYING](COPYING) and [NOTICE](NOTICE). Historical branches remain available for provenance. Please report issues with the version, minimal input, parameters, expected result and actual result; do not post private subject data.
+| Module | MATLAB (`+rsa_meeg` / `+rsa`) | Python (`rsa_meeg`) | Core Capabilities |
+|---|---|---|---|
+| **Input & Geometry** | `dataset`, `io.*`, `geometry.*` | `sim`, `rdm` | Epoched EEGLAB/FieldTrip/MNE-STC adapters, FreeSurfer surfaces/labels, Euclidean/mesh/spacetime neighborhoods |
+| **Simulation (`+sim`)** | `sim.generate_beta_patterns`, `sim.cortical_perlin_noise` | `sim.generate_beta_patterns`, `sim.cortical_perlin_noise` | 64-condition (`4x16`) & hierarchical multivariate patterns; 30-scale (`2–60 mm`) cortical geodesic Perlin spatial textures; hybrid prestimulus sensor-covariance noise |
+| **RDMs & Whitening (`+rdm`)** | `rdm.shrinkage_precision`, `rdm.searchlight`, `rdm.average` | `rdm.shrinkage_precision`, `rdm.compute_rdm`, `rdm.build_three_tier_speech_rdms` | Ledoit-Wolf / OAS / fixed shrinkage precision $\mathbf{P} = \hat{\boldsymbol{\Sigma}}^{-1}$; spatial, temporal, and spatiotemporal crossnobis/correlation/sqeuclidean searchlights; three-tier zero-tie continuous speech RDMs |
+| **Model Mapping (`+mapping`)** | `mapping.compare`, `mapping.partial_compare`, `mapping.glm`, `mapping.dynamic_glm` | `mapping.compare_rdm`, `mapping.partial_compare_rdm` | Condition-aligned Spearman/Pearson/Kendall $\tau_a$; analytical QR rank-residualized partial Spearman/Pearson RDM regression; lagged dynamic GLM |
+| **Inference (`+stats` / `+inference`)** | `inference.group`, `inference.condition_permutation`, `inference.bh` | `stats.group_permutation_test`, `stats.bh_fdr` | Subject-level whole-map sign-flip max-$t$, cluster-mass, and TFCE permutation inference; condition-label permutation; Benjamini-Hochberg FDR |
+
+See [API Reference](docs/API.md), [Scientific Methods](docs/METHODS.md), [Validation Record](docs/VALIDATION.md), [Scientific Scope & Operating Guardrails](docs/SCIENTIFIC_SCOPE.md), and [References](docs/REFERENCES.md).
+
+---
+
+## License & Citation
+
+Released under **LGPL-3.0-only**; see [COPYING.LESSER](COPYING.LESSER), [COPYING](COPYING), [NOTICE](NOTICE), and [CITATION.cff](CITATION.cff). Cite **An et al. (2026)**, **Nili et al. (2014)** for the RSA toolbox foundations, and **Su et al. (2014)** for spatiotemporal searchlight RSA.

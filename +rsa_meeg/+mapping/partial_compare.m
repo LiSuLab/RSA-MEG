@@ -104,8 +104,10 @@ for t = 1:nt
             rx = xj - Q * (Q.' * xj);
             norm_rx = sqrt(sum(rx.^2));
             scale_x = sqrt(sum((xj - mean(xj)).^2));
-            if norm_ry <= 1e-12 * max(1, scale_y) || norm_rx <= 1e-12 * max(1, scale_x)
+            if scale_y <= 1e-12 || scale_x <= 1e-12
                 v(c, t, j) = NaN;
+            elseif norm_ry <= 1e-12 * max(1, scale_y) || norm_rx <= 1e-12 * max(1, scale_x)
+                v(c, t, j) = 0.0;
             else
                 r_val = sum(ry .* rx) / (norm_ry * norm_rx);
                 v(c, t, j) = max(-1.0, min(1.0, r_val));

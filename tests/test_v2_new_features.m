@@ -241,3 +241,25 @@ verifyLessThan(testCase, abs(out.asf_mean_r), 0.2);
 verifyGreaterThan(testCase, out.isf_mean_r, out.asf_mean_r);
 verifyGreaterThan(testCase, out.focal_specificity_rescued, out.focal_specificity_unwhitened);
 end
+
+function test_rsa_namespace_alias_and_64condition_v2(testCase)
+% Verify +rsa (+sim, +rdm, +mapping, +stats) forwarding aliases and 64-condition (4x16) V2 hierarchy
+spec64 = {0.6, {0.3, 16}, {0.3, 16}, {0.3, 16}, {0.3, 16}};
+[B64, cov64, rdm64] = rsa.sim.generate_beta_patterns(spec64, 80, 'ExactCovariance', true, 'Seed', 2026);
+verifyEqual(testCase, size(B64), [64, 80]);
+verifyEqual(testCase, size(cov64), [64, 64]);
+verifyEqual(testCase, size(rdm64.values), [2016, 1]);
+
+pos = [(0:5).' * 5, zeros(6, 2)];
+[noise, info] = rsa.sim.cortical_perlin_noise(pos, 16, 2, 'Seed', 11);
+verifyEqual(testCase, size(noise), [16, 6, 2]);
+verifyEqual(testCase, numel(info.scales_mm), 30);
+
+[P, pinfo] = rsa.rdm.shrinkage_precision(noise(:, :, 1), 'Method', 'ledoit-wolf');
+verifyEqual(testCase, size(P), [6, 6]);
+verifyGreaterThanOrEqual(testCase, pinfo.shrinkage, 0);
+
+x_stat = [2 2; 3 3; 4 4; 5 5];
+g = rsa.stats.group(x_stat, 'Exact', true);
+verifyEqual(testCase, g.n_permutations, 16);
+end

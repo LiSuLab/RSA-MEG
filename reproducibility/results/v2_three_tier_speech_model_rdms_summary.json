@@ -1,0 +1,197 @@
+{
+  "dataset": "Kymata Soto 64 Spoken Words (Naturalistic Continuous Story)",
+  "audio_fs_hz": 48000,
+  "n_words": 64,
+  "n_word_pairs": 2016,
+  "manner_family_order": [
+    "Plosive",
+    "Fricative",
+    "Nasal_Liquid",
+    "Vowel"
+  ],
+  "manner_family_counts": {
+    "Plosive": 12,
+    "Fricative": 22,
+    "Nasal_Liquid": 14,
+    "Vowel": 16
+  },
+  "manner_family_words": {
+    "Plosive": [
+      "deserts",
+      "discovering",
+      "drinks",
+      "chilled",
+      "culinary",
+      "to",
+      "pretty",
+      "parlance",
+      "ground",
+      "but",
+      "people",
+      "put"
+    ],
+    "Fricative": [
+      "there's",
+      "that",
+      "speaking",
+      "sounds",
+      "here",
+      "so",
+      "things",
+      "these",
+      "healthy",
+      "that",
+      "from",
+      "food",
+      "had",
+      "saltpetre",
+      "so",
+      "so",
+      "frozen",
+      "they're",
+      "start",
+      "from",
+      "circulating",
+      "from"
+    ],
+    "Nasal_Liquid": [
+      "one",
+      "were",
+      "usually",
+      "least",
+      "you",
+      "recorded",
+      "lot",
+      "what",
+      "rather",
+      "neapolitan",
+      "really",
+      "with",
+      "really",
+      "which"
+    ],
+    "Vowel": [
+      "and",
+      "i",
+      "involved",
+      "it",
+      "orchids",
+      "and",
+      "or",
+      "ice",
+      "out",
+      "of",
+      "any",
+      "india",
+      "it's",
+      "in",
+      "other",
+      "and"
+    ]
+  },
+  "model1_tvl_loudness_onset": {
+    "description": "Glasberg-Moore 32-ERB Specific Loudness & Onset Step Dynamics [L_bar, Delta_L]",
+    "L_bar_raw_range": [
+      0.3743614550648683,
+      1.0502980721591793
+    ],
+    "Delta_L_raw_range": [
+      -0.3114361818890831,
+      1.016920504111105
+    ],
+    "rank_ties_in_2016_pairs": 0
+  },
+  "model2_tonotopic_erb_pitch": {
+    "description": "2D Pitch-Cochlear ERB Spectral Centroid [C_ERB_tilde, P_f0_tilde] orthogonalized against Loudness",
+    "erb_cam_grid_range": [
+      3.2630783754172876,
+      32.81785133112707
+    ],
+    "C_erb_raw_cam_range": [
+      5.147023259011941,
+      31.327254816907214
+    ],
+    "C_erb_raw_cam_mean_sd": [
+      13.144538365531204,
+      6.7384781827753715
+    ],
+    "f0_hz_raw_range": [
+      99.17355371900827,
+      400.0
+    ],
+    "r_max_harmonicity_mean_sd": [
+      0.738237840029695,
+      0.1919873476055949
+    ],
+    "pearson_r_C_erb_raw_vs_L_bar": 0.011360517140038197,
+    "pearson_r_C_erb_tilde_vs_L_bar": 1.7694179454963432e-16,
+    "pearson_r_P_f0_tilde_vs_L_bar": -3.95516952522712e-16,
+    "orthogonality_criterion_met_abs_r_lt_0_05": true,
+    "rank_ties_in_2016_pairs": 0
+  },
+  "model3_articulatory_manner_3d": {
+    "description": "3D Articulatory-Acoustic Manner State Space [M_burst_tilde, M_HNR_tilde, M_F1F2_tilde]",
+    "within_family_mean_dissimilarity": 0.6453033063886788,
+    "between_family_mean_dissimilarity": 2.7349423851037065,
+    "between_to_within_ratio": 4.238227757432501,
+    "mean_silhouette_score_4_quadrants": 0.6846328256227641,
+    "nearest_centroid_quadrant_accuracy": 1.0,
+    "block_4x4_mean_dissimilarity_matrix": [
+      [
+        0.799217483019519,
+        2.856164269397219,
+        3.0943259274201473,
+        3.4173015707378624
+      ],
+      [
+        2.8561642693972185,
+        0.5702866479516299,
+        2.4068286438799134,
+        2.9909061076904435
+      ],
+      [
+        3.0943259274201473,
+        2.406828643879914,
+        0.5874630266196283,
+        1.7865844643090212
+      ],
+      [
+        3.4173015707378624,
+        2.9909061076904435,
+        1.7865844643090212,
+        0.7489197888912327
+      ]
+    ],
+    "quadrant_centroids_3d": {
+      "Plosive": [
+        1.974123203535384,
+        0.08202074835450597,
+        -0.948815482791392
+      ],
+      "Fricative": [
+        -0.41211778376671493,
+        -1.2794763944761043,
+        -0.545061337408409
+      ],
+      "Nasal_Liquid": [
+        -0.7916874478198279,
+        0.9888223704746266,
+        -0.06275335672754805
+      ],
+      "Vowel": [
+        -0.22120393312995545,
+        0.8325449069734654,
+        1.515980138166711
+      ]
+    },
+    "rank_ties_in_2016_pairs": 0
+  },
+  "inter_model_rdm_spearman_correlations": {
+    "rho_model1_vs_model2": -0.0571277442577041,
+    "rho_model1_vs_model3": 0.053149284197871204,
+    "rho_model2_vs_model3": -0.0022268182343030004,
+    "rho_model1_vs_legacy32band": 0.425858547788674,
+    "rho_model2_vs_legacy32band": 0.3211301289271606,
+    "rho_model3_vs_legacy32band": 0.05560510826355981
+  }
+}

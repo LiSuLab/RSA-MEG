@@ -1,0 +1,120 @@
+{
+  "control1_lexical_and_prosodic_confounds": {
+    "n_spoken_word_tokens": 64,
+    "n_unique_lexical_types": 56,
+    "spearman_r_M3_vs_duration_syllables": 0.066,
+    "spearman_r_M3_vs_subtlex_zipf_freq": 0.1384,
+    "spearman_r_M3_vs_content_function_class": 0.0746,
+    "M3_rank_variance_retained_after_lexical_prosodic_regression_pct": 98.06,
+    "M3_correlation_before_vs_after_lexical_control": 0.9903,
+    "meg_sensor_M3_partial_150ms_rho": 0.0472,
+    "meg_sensor_M3_partial_150ms_t": 8.3,
+    "meg_sensor_M3_partial_150ms_p": 2.3e-06,
+    "meg_sensor_M3_cluster_fwer_p": 0.00024,
+    "eeg_gyral_stg_M3_partial_150ms_rho": 0.015,
+    "eeg_gyral_stg_M3_partial_150ms_t": 3.45,
+    "eeg_gyral_stg_M3_partial_150ms_p": 0.013
+  },
+  "control2_mantel_stimulus_permutation_and_noise_ceilings": {
+    "n_word_pairs": 2016,
+    "n_mantel_permutations": 2000,
+    "mantel_null_sd": 0.0632,
+    "bankssts_crossmodal_200ms_rho": 0.0723,
+    "bankssts_mantel_perm_p": 0.1229,
+    "auditory_cortex_crossmodal_rho": 0.0472,
+    "auditory_cortex_mantel_perm_p": 0.2174,
+    "noise_ceilings_and_normalized_explainable_variance": {
+      "meg_sensor_n12": {
+        "lower_noise_ceiling_rho": 0.062,
+        "M3_peak_rho": 0.0472,
+        "M3_pct_noise_ceiling": 76.1,
+        "M2_peak_rho": 0.0289,
+        "M2_pct_noise_ceiling": 46.6
+      },
+      "eeg_sensor_n8": {
+        "lower_noise_ceiling_rho": 0.036,
+        "M1_peak_rho": 0.0217,
+        "M1_pct_noise_ceiling": 60.3,
+        "M2_peak_rho": 0.0176,
+        "M2_pct_noise_ceiling": 48.9
+      },
+      "meg_source_hg_n9": {
+        "lower_noise_ceiling_rho": 0.048,
+        "M2_peak_rho": 0.0328,
+        "M2_pct_noise_ceiling": 68.3
+      },
+      "eeg_source_lat_stg_n5": {
+        "lower_noise_ceiling_rho": 0.028,
+        "M3_peak_rho": 0.015,
+        "M3_pct_noise_ceiling": 53.6
+      }
+    }
+  },
+  "control3_eeg_spatial_rescue_nonparametric_and_outlier_audit": {
+    "valid_eeg_bem_subjects_n6": [
+      "E1",
+      "E6",
+      "E9",
+      "E10",
+      "E11",
+      "E18"
+    ],
+    "ple_min_mm_snr8p2_all6": {
+      "Univariate_ASF_2x": {
+        "mean": 41.75,
+        "sem": 12.41,
+        "median": 36.11,
+        "q25": 21.04,
+        "q75": 53.23
+      },
+      "Spatial_Isotropic_RSA": {
+        "mean": 38.27,
+        "sem": 13.91,
+        "median": 35.6,
+        "q25": 11.55,
+        "q75": 64.32
+      },
+      "Spatial_Shrunk_RSA": {
+        "mean": 20.68,
+        "sem": 11.31,
+        "median": 11.75,
+        "q25": 7.13,
+        "q75": 17.44
+      },
+      "Spatiotemporal_Shrunk_RSA": {
+        "mean": 17.33,
+        "sem": 10.51,
+        "median": 8.64,
+        "q25": 5.84,
+        "q75": 11.6
+      }
+    },
+    "non_outlier_5_subjects_E6_to_E18": {
+      "subjects": [
+        "E6",
+        "E9",
+        "E10",
+        "E11",
+        "E18"
+      ],
+      "ple_st_shrunk_values_mm": [
+        0.0,
+        12.0,
+        10.42,
+        6.87,
+        5.49
+      ],
+      "ple_st_shrunk_mean_mm": 6.96,
+      "ple_st_shrunk_sem_mm": 2.1,
+      "ple_asf_mean_mm": 41.56,
+      "paired_t_df4": 2.37,
+      "p_one_sided_df4": 0.0118
+    },
+    "spurious_vertex_fraction_reduction": {
+      "spatial_iso_pct": 30.1,
+      "st_shrunk_pct": 7.1,
+      "paired_t_df5": 3.04,
+      "p_one_sided_df5": 0.0143
+    }
+  }
+}
